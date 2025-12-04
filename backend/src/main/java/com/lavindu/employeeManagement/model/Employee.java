@@ -1,4 +1,4 @@
-package com.lavindu.employeeManagement;
+package com.lavindu.employeeManagement.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
