@@ -40,5 +40,8 @@ public class EmployeeController {
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
     }
     
-
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello, Employee Management!";
+    }
 }
