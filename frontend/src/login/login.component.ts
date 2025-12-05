@@ -25,6 +25,8 @@ export class LoginComponent {
     this.http.post(apiUrl, loginData).subscribe({
       next: (response: any) => {
         console.log('Login successful:', response);
+
+        this.router.navigate(['/dashboard']);
       },
       error: (error) => {
         console.error('Login failed:', error);

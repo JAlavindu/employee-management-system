@@ -1,0 +1,32 @@
+<div class="dashboard-container">
+  <h1>System Dashboard</h1>
+
+  <div class="stats-grid">
+    <!-- Total Employees -->
+    <div class="stat-card total">
+      <div class="icon">👥</div>
+      <div class="info">
+        <h3>Total Registered</h3>
+        <p class="count">{{ totalEmployees }}</p>
+      </div>
+    </div>
+
+    <!-- Active Employees -->
+    <div class="stat-card active">
+      <div class="icon">✅</div>
+      <div class="info">
+        <h3>Active Employees</h3>
+        <p class="count">{{ activeEmployees }}</p>
+      </div>
+    </div>
+
+    <!-- Deactivated Employees -->
+    <div class="stat-card inactive">
+      <div class="icon">❌</div>
+      <div class="info">
+        <h3>Deactivated</h3>
+        <p class="count">{{ deactivatedEmployees }}</p>
+      </div>
+    </div>
+  </div>
+</div>
