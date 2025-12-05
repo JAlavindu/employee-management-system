@@ -25,6 +25,7 @@ export class LoginComponent {
     this.http.post(apiUrl, loginData).subscribe({
       next: (response: any) => {
         console.log('Login successful:', response);
+        localStorage.setItem('authToken', response.token);
 
         this.router.navigate(['/dashboard']);
       },

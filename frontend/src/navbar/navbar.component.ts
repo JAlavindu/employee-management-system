@@ -13,6 +13,7 @@ export class NavbarComponent {
   onLogout() {
     // Implement logout logic here (e.g., clear tokens, session data, etc.)
     console.log('User logged out');
+    localStorage.removeItem('authToken');
     this.router.navigate(['/login']);
   }
 }
