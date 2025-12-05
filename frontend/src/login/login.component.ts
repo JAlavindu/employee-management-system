@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -13,8 +14,22 @@ export class LoginComponent {
   username = '';
   password = '';
 
+  private http = inject(HttpClient);
+  private router = inject(Router);
+
   onLogin() {
-    console.log('Login attempt', this.username, this.password);
-    // Add authentication logic here
+    const loginData = { username: this.username, password: this.password };
+
+    const apiUrl = 'http://localhost:8080/api/auth/login';
+
+    this.http.post(apiUrl, loginData).subscribe({
+      next: (response: any) => {
+        console.log('Login successful:', response);
+      },
+      error: (error) => {
+        console.error('Login failed:', error);
+        alert('Login failed. Please check your credentials and try again.');
+      },
+    });
   }
 }
