@@ -14,6 +14,29 @@
   letter-spacing: 0.5px;
 }
 
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-actions a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+  font-size: 0.95rem;
+}
+
+.nav-actions a:hover {
+  color: white;
+}
+
+.nav-actions a.active {
+  color: white;
+  border-bottom: 2px solid #3498db;
+}
+
 .logout-btn {
   background-color: transparent;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -22,6 +45,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s;
+  font-size: 0.9rem;
 }
 
 .logout-btn:hover {
