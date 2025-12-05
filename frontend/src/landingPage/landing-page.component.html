@@ -1,0 +1,35 @@
+<div class="landing-container">
+  <header class="hero">
+    <nav class="navbar">
+      <div class="logo">EmpManage</div>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <button class="login-btn">Login</button>
+      </div>
+    </nav>
+    <div class="hero-content">
+      <h1>Manage Your Workforce Efficiently</h1>
+      <p>
+        The ultimate solution for modern employee management. Streamline your HR processes today.
+      </p>
+      <button class="cta-btn">Get Started</button>
+    </div>
+  </header>
+
+  <section id="features" class="features-section">
+    <h2>Why Choose Us?</h2>
+    <div class="features-grid">
+      <div class="feature-card" *ngFor="let feature of features">
+        <div class="icon">{{ feature.icon }}</div>
+        <h3>{{ feature.title }}</h3>
+        <p>{{ feature.description }}</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 Employee Management System. All rights reserved.</p>
+  </footer>
+</div>
