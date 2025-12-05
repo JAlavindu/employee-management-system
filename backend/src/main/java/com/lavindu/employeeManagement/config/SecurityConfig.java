@@ -58,7 +58,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()  // Allow login/register without authentication
+                        .requestMatchers("/api/auth/**", "/api/hello").permitAll()  // Allow login/register and hello without authentication
                         .anyRequest().authenticated()  // All other requests need authentication
                 )
                 .sessionManagement(session -> session
