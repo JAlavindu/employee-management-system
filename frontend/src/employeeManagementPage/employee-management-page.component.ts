@@ -80,7 +80,7 @@ export class EmployeeManagementPageComponent {
       }
 
       // 4. Send to Backend
-      const apiUrl = 'http://localhost:8080/api/employee';
+      const apiUrl = `${process.env['BACKEND_URL']}employee`;
       const token = localStorage.getItem('authToken');
 
       // Note: Do NOT set 'Content-Type': 'multipart/form-data' manually.
