@@ -20,7 +20,7 @@ export class LoginComponent {
   onLogin() {
     const loginData = { username: this.username, password: this.password };
 
-    const apiUrl = 'http://localhost:8080/api/auth/login';
+    const apiUrl = `${process.env['BACKEND_URL']}auth/login`;
 
     this.http.post(apiUrl, loginData).subscribe({
       next: (response: any) => {
