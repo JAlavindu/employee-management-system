@@ -1,0 +1,111 @@
+<div class="page-container">
+  <div class="header-actions">
+    <h2>Employee Management</h2>
+    <button class="btn-new" (click)="openModal()">+ New Employee</button>
+  </div>
+
+  <!-- Placeholder for list -->
+  <div class="content-placeholder">
+    <p>Employee list will appear here.</p>
+  </div>
+
+  <!-- Registration Modal -->
+  <div class="modal-overlay" *ngIf="showModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>New Employee Registration</h3>
+        <button class="close-btn" (click)="closeModal()">×</button>
+      </div>
+
+      <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Employee Code -->
+          <div class="form-group">
+            <label>Employee Code</label>
+            <input type="text" formControlName="employeeCode" placeholder="EMP001" />
+          </div>
+
+          <!-- Status -->
+          <div class="form-group">
+            <label>Status</label>
+            <select formControlName="status">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+
+          <!-- First Name -->
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" formControlName="firstName" />
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" formControlName="lastName" />
+          </div>
+
+          <!-- NIC -->
+          <div class="form-group">
+            <label>NIC</label>
+            <input type="text" formControlName="nic" />
+          </div>
+
+          <!-- Mobile No -->
+          <div class="form-group">
+            <label>Mobile No</label>
+            <input type="tel" formControlName="mobileNo" />
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label>E-mail</label>
+            <input type="email" formControlName="email" />
+          </div>
+
+          <!-- Designation -->
+          <div class="form-group">
+            <label>Designation</label>
+            <select formControlName="designation">
+              <option value="" disabled>Select Designation</option>
+              <option *ngFor="let d of designations" [value]="d">{{ d }}</option>
+            </select>
+          </div>
+
+          <!-- Date of Birth -->
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" formControlName="dob" />
+          </div>
+
+          <!-- Profile Image -->
+          <div class="form-group">
+            <label>Profile Image</label>
+            <input type="file" (change)="onFileChange($event)" />
+          </div>
+
+          <!-- Gender (Full Width) -->
+          <div class="form-group full-width">
+            <label>Gender</label>
+            <div class="radio-group">
+              <label><input type="radio" value="male" formControlName="gender" /> Male</label>
+              <label><input type="radio" value="female" formControlName="gender" /> Female</label>
+            </div>
+          </div>
+
+          <!-- Address (Full Width) -->
+          <div class="form-group full-width">
+            <label>Address</label>
+            <textarea formControlName="address" rows="2"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+          <button type="submit" class="btn-save">Save Employee</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
