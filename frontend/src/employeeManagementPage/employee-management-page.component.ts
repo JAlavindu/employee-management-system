@@ -45,7 +45,7 @@ export class EmployeeManagementPageComponent implements OnInit {
 
   constructor() {
     this.employeeForm = this.fb.group({
-      employeeCode: ['', [Validators.required, Validators.pattern(/^EMP\d{3}$/)]],
+      employeeCode: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       address: [''],
@@ -77,6 +77,7 @@ export class EmployeeManagementPageComponent implements OnInit {
     };
     this.http.get(apiUrl, { headers }).subscribe({
       next: (data: any) => {
+        console.log('Fetched employees:', data);
         this.employees = data;
         this.filteredEmployees = [...this.employees];
       },
@@ -97,7 +98,7 @@ export class EmployeeManagementPageComponent implements OnInit {
   onSearch() {
     this.filteredEmployees = this.employees.filter((emp) => {
       const matchCode = this.searchCode
-        ? emp.employeeCode.toLowerCase().includes(this.searchCode.toLowerCase())
+        ? emp.empCode.toLowerCase().includes(this.searchCode.toLowerCase())
         : true;
       const matchNic = this.searchNic
         ? emp.nic.toLowerCase().includes(this.searchNic.toLowerCase())
@@ -172,6 +173,7 @@ export class EmployeeManagementPageComponent implements OnInit {
           alert('Employee added successfully!');
           this.closeModal();
           // Optional: Refresh your list here
+          this.fetchEmployees();
         },
         error: (error: any) => {
           console.error('Error adding employee:', error);
