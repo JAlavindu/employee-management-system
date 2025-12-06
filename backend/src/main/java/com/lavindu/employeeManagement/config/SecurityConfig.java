@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.http.HttpMethod;
 
 
 import java.util.Arrays;
@@ -59,6 +60,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**", "/api/hello").permitAll()  // Allow login/register and hello without authentication
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Allow preflight checks
                         .anyRequest().authenticated()  // All other requests need authentication
                 )
                 .sessionManagement(session -> session

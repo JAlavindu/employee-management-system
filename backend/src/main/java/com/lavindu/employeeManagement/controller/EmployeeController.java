@@ -1,6 +1,7 @@
 package com.lavindu.employeeManagement.controller;
 
 import com.lavindu.employeeManagement.model.Employee;
+import com.lavindu.employeeManagement.dto.DashboardStats;
 import com.lavindu.employeeManagement.service.EmployeeService;
 import com.lavindu.employeeManagement.service.ReportService;
 
@@ -41,6 +42,14 @@ public class EmployeeController {
     @GetMapping("/employees")
     public ResponseEntity <List<Employee>> getEmployees() {
         return new ResponseEntity<>(employeeService.getAllEmployees(), HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/dashboard-stats")
+    public ResponseEntity<DashboardStats> getDashboardStats() {
+        long total = employeeService.getTotalEmployees();
+        long active = employeeService.getActiveEmployees();
+        long deactivated = employeeService.getDeactivatedEmployees();
+        return new ResponseEntity<>(new DashboardStats(total, active, deactivated), HttpStatus.OK);
     }
 
     @PostMapping("/employee")
