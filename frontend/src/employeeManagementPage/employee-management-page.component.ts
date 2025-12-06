@@ -1,18 +1,35 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-employee-management-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './employee-management-page.component.html',
   styleUrls: ['./employee-management-page.component.css'],
 })
-export class EmployeeManagementPageComponent {
+export class EmployeeManagementPageComponent implements OnInit {
   showModal = false;
   employeeForm: FormGroup;
+
+  // Search State
+  searchCode = '';
+  searchNic = '';
+  searchName = '';
+  searchStatus = 'All';
+
+  // Data State
+  employees: any[] = [];
+  filteredEmployees: any[] = [];
 
   designations = [
     'Software Engineer',
@@ -41,6 +58,77 @@ export class EmployeeManagementPageComponent {
       dob: ['', Validators.required],
       status: ['Active', Validators.required],
     });
+  }
+
+  ngOnInit() {
+    this.fetchEmployees();
+  }
+
+  fetchEmployees() {
+    // TODO: Replace with actual API call
+    // const apiUrl = `${environment.apiUrl}employee`;
+    // this.http.get(apiUrl).subscribe(...)
+
+    // Mock Data for demonstration
+    this.employees = [
+      {
+        employeeCode: 'EMP001',
+        firstName: 'John',
+        lastName: 'Doe',
+        address: '123 Main St',
+        nic: '123456789V',
+        mobileNo: '0771234567',
+        designation: 'Software Engineer',
+        status: 'Active',
+      },
+      {
+        employeeCode: 'EMP002',
+        firstName: 'Jane',
+        lastName: 'Smith',
+        address: '456 Oak Ave',
+        nic: '987654321V',
+        mobileNo: '0719876543',
+        designation: 'QA Engineer',
+        status: 'Inactive',
+      },
+      {
+        employeeCode: 'EMP003',
+        firstName: 'Alice',
+        lastName: 'Johnson',
+        address: '789 Pine Rd',
+        nic: '456123789V',
+        mobileNo: '0751239876',
+        designation: 'Project Manager',
+        status: 'Active',
+      },
+    ];
+    this.filteredEmployees = [...this.employees];
+  }
+
+  onSearch() {
+    this.filteredEmployees = this.employees.filter((emp) => {
+      const matchCode = this.searchCode
+        ? emp.employeeCode.toLowerCase().includes(this.searchCode.toLowerCase())
+        : true;
+      const matchNic = this.searchNic
+        ? emp.nic.toLowerCase().includes(this.searchNic.toLowerCase())
+        : true;
+      const fullName = `${emp.firstName} ${emp.lastName}`.toLowerCase();
+      const matchName = this.searchName ? fullName.includes(this.searchName.toLowerCase()) : true;
+      const matchStatus = this.searchStatus !== 'All' ? emp.status === this.searchStatus : true;
+
+      return matchCode && matchNic && matchName && matchStatus;
+    });
+  }
+
+  onView(employee: any) {
+    console.log('View employee:', employee);
+    // Implement View Logic
+  }
+
+  onEdit(employee: any) {
+    console.log('Edit employee:', employee);
+    // Implement Edit Logic (e.g., populate form and open modal)
   }
 
   openModal() {
@@ -80,7 +168,7 @@ export class EmployeeManagementPageComponent {
       }
 
       // 4. Send to Backend
-      const apiUrl = `${process.env['BACKEND_URL']}employee`;
+      const apiUrl = `${environment.apiUrl}employee`;
       const token = localStorage.getItem('authToken');
 
       // Note: Do NOT set 'Content-Type': 'multipart/form-data' manually.

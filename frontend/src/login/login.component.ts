@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -13,14 +14,19 @@ import { HttpClient } from '@angular/common/http';
 export class LoginComponent {
   username = '';
   password = '';
+  showPassword = false;
 
   private http = inject(HttpClient);
   private router = inject(Router);
 
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
   onLogin() {
     const loginData = { username: this.username, password: this.password };
 
-    const apiUrl = `${process.env['BACKEND_URL']}auth/login`;
+    const apiUrl = `${environment.apiUrl}auth/login`;
 
     this.http.post(apiUrl, loginData).subscribe({
       next: (response: any) => {
