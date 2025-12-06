@@ -19,6 +19,8 @@ import { environment } from '../environments/environment';
 })
 export class EmployeeManagementPageComponent implements OnInit {
   showModal = false;
+  showViewModal = false;
+  selectedEmployee: any = null;
   employeeForm: FormGroup;
 
   // Search State
@@ -116,7 +118,8 @@ export class EmployeeManagementPageComponent implements OnInit {
 
   onView(employee: any) {
     console.log('View employee:', employee);
-    // Implement View Logic
+    this.selectedEmployee = employee;
+    this.showViewModal = true;
   }
 
   onEdit(employee: any) {
@@ -131,6 +134,11 @@ export class EmployeeManagementPageComponent implements OnInit {
   closeModal() {
     this.showModal = false;
     this.employeeForm.reset({ gender: 'male', status: 'Active' });
+  }
+
+  closeViewModal() {
+    this.showViewModal = false;
+    this.selectedEmployee = null;
   }
 
   onSubmit() {
