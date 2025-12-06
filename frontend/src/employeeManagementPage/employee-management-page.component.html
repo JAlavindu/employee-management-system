@@ -4,12 +4,76 @@
     <button class="btn-new" (click)="openModal()">+ New Employee</button>
   </div>
 
-  <!-- Placeholder for list -->
-  <div class="content-placeholder">
-    <p>Employee list will appear here.</p>
+  <!-- Search Section -->
+  <div class="search-panel">
+    <div class="search-grid">
+      <div class="search-group">
+        <label>Employee Code</label>
+        <input type="text" [(ngModel)]="searchCode" placeholder="Search by Code" />
+      </div>
+      <div class="search-group">
+        <label>Employee NIC</label>
+        <input type="text" [(ngModel)]="searchNic" placeholder="Search by NIC" />
+      </div>
+      <div class="search-group">
+        <label>Employee Name</label>
+        <input type="text" [(ngModel)]="searchName" placeholder="Search by Name" />
+      </div>
+      <div class="search-group">
+        <label>Status</label>
+        <select [(ngModel)]="searchStatus">
+          <option value="All">All</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div class="search-actions">
+      <button class="btn-search" (click)="onSearch()">Search</button>
+    </div>
   </div>
 
-  <!-- Registration Modal -->
+  <!-- Employee Table -->
+  <div class="table-container">
+    <table class="employee-table">
+      <thead>
+        <tr>
+          <th>Employee Code</th>
+          <th>Full Name</th>
+          <th>Address</th>
+          <th>NIC</th>
+          <th>Mobile No</th>
+          <th>Designation</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emp of filteredEmployees">
+          <td>{{ emp.employeeCode }}</td>
+          <td>{{ emp.firstName }} {{ emp.lastName }}</td>
+          <td>{{ emp.address }}</td>
+          <td>{{ emp.nic }}</td>
+          <td>{{ emp.mobileNo }}</td>
+          <td>{{ emp.designation }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="emp.status.toLowerCase()">
+              {{ emp.status }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button class="btn-action view" (click)="onView(emp)">View</button>
+            <button class="btn-action edit" (click)="onEdit(emp)">Edit</button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredEmployees.length === 0">
+          <td colspan="8" class="no-data">No employees found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Registration Modal (Existing Code) -->
   <div class="modal-overlay" *ngIf="showModal">
     <div class="modal-content">
       <div class="modal-header">

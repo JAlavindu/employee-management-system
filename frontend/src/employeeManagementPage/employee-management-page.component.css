@@ -156,3 +156,127 @@ textarea:focus {
 .btn-cancel:hover {
   background: #bdc3c7;
 }
+
+/* Search Panel */
+.search-panel {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.search-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-search {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-search:hover {
+  background-color: #2980b9;
+}
+
+/* Table Styles */
+.table-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+.employee-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.employee-table th,
+.employee-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.employee-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.employee-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.inactive {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.actions-cell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-action {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: opacity 0.2s;
+}
+
+.btn-action.view {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.btn-action.edit {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.btn-action:hover {
+  opacity: 0.8;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #7f8c8d;
+  font-style: italic;
+}
