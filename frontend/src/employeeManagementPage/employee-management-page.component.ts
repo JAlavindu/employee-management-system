@@ -80,6 +80,7 @@ export class EmployeeManagementPageComponent implements OnInit {
         console.log('Fetched employees:', data);
         this.employees = data;
         this.filteredEmployees = [...this.employees];
+        console.log('Filtered employees updated:', this.filteredEmployees);
       },
       error: (error: any) => {
         console.error('Error fetching employees:', error);
