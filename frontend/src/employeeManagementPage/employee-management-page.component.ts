@@ -122,6 +122,35 @@ export class EmployeeManagementPageComponent implements OnInit {
     this.showViewModal = true;
   }
 
+  downloadReport(format: 'pdf' | 'excel') {
+    if (!this.selectedEmployee) return;
+
+    const empCode = this.selectedEmployee.empCode;
+    // Construct URL: e.g., /api/employee/{empCode}/download/pdf
+    const apiUrl = `${environment.apiUrl}employee/${empCode}/download/${format}`;
+    const token = localStorage.getItem('authToken');
+    const headers = { Authorization: `Bearer ${token}` };
+
+    this.http.get(apiUrl, { headers, responseType: 'blob' }).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Employee_${empCode}_Report.${format === 'excel' ? 'xlsx' : 'pdf'}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      },
+      error: (error) => {
+        console.error(`Error downloading ${format} report:`, error);
+        alert(
+          `Failed to download ${format.toUpperCase()} report. Please ensure the backend supports this feature.`
+        );
+      },
+    });
+  }
+
   onEdit(employee: any) {
     console.log('Edit employee:', employee);
     // Implement Edit Logic (e.g., populate form and open modal)
