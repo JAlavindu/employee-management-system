@@ -55,6 +55,18 @@ public class EmployeeService {
         return employeeRepo.save(existingEmployee);
     }
 
+    public long getTotalEmployees() {
+        return employeeRepo.count();
+    }
+
+    public long getActiveEmployees() {
+        return employeeRepo.countByStatus("Active");
+    }
+
+    public long getDeactivatedEmployees() {
+        return employeeRepo.countByStatus("Inactive");
+    }
+
     private String generateNextEmpCode() {
         String lastCode = employeeRepo.findLastEmpCode();
         
