@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -21,7 +23,7 @@ import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 import java.util.List;
-import org.springframework.web.bind.annotation.PostMapping;
+
 
 
 
@@ -50,6 +52,21 @@ public class EmployeeController {
             return new ResponseEntity<>("Image upload failed: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>(newEmployee, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/employee/{empCode}")
+    public ResponseEntity<?> updateEmployee(
+            @PathVariable String empCode,
+            @Valid @RequestPart Employee employee,
+            @RequestPart(required = false) MultipartFile imageFile) {
+        try {
+            Employee updated = employeeService.updateEmployee(empCode, employee, imageFile);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (IOException e) {
+            return new ResponseEntity<>("Image upload failed", HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/employee/{empCode}/download/{format}")
