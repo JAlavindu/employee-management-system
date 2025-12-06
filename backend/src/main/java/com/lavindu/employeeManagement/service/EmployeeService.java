@@ -29,6 +29,32 @@ public class EmployeeService {
         return employeeRepo.save(employee);
     }
 
+    public Employee updateEmployee(String empCode, Employee updatedEmployee, MultipartFile imageFile) throws IOException {
+        Employee existingEmployee = employeeRepo.findById(empCode)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        // Update allowed fields
+        existingEmployee.setFirstName(updatedEmployee.getFirstName());
+        existingEmployee.setLastName(updatedEmployee.getLastName());
+        existingEmployee.setAddress(updatedEmployee.getAddress());
+        existingEmployee.setNIC(updatedEmployee.getNIC());
+        existingEmployee.setMobileNo(updatedEmployee.getMobileNo());
+        existingEmployee.setEmail(updatedEmployee.getEmail());
+        existingEmployee.setDesignation(updatedEmployee.getDesignation());
+        existingEmployee.setStatus(updatedEmployee.getStatus());
+
+        // Handle Image Update (Optional)
+        if (imageFile != null && !imageFile.isEmpty()) {
+            existingEmployee.setImageName(imageFile.getOriginalFilename());
+            existingEmployee.setImageType(imageFile.getContentType());
+            existingEmployee.setImageData(imageFile.getBytes());
+        }
+
+        // Explicitly NOT updating: empCode, gender, dob
+
+        return employeeRepo.save(existingEmployee);
+    }
+
     private String generateNextEmpCode() {
         String lastCode = employeeRepo.findLastEmpCode();
         

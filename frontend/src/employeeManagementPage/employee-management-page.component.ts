@@ -20,6 +20,7 @@ import { environment } from '../environments/environment';
 export class EmployeeManagementPageComponent implements OnInit {
   showModal = false;
   showViewModal = false;
+  isEditMode = false;
   selectedEmployee: any = null;
   employeeForm: FormGroup;
 
@@ -153,16 +154,59 @@ export class EmployeeManagementPageComponent implements OnInit {
 
   onEdit(employee: any) {
     console.log('Edit employee:', employee);
-    // Implement Edit Logic (e.g., populate form and open modal)
+    this.isEditMode = true;
+    this.selectedEmployee = employee;
+    this.showModal = true;
+
+    // Patch values
+    this.employeeForm.patchValue({
+      employeeCode: employee.empCode,
+      firstName: employee.firstName,
+      lastName: employee.lastName,
+      address: employee.address,
+      nic: employee.nic,
+      mobileNo: employee.mobileNo,
+      gender: employee.gender,
+      email: employee.email,
+      designation: employee.designation,
+      dob: employee.dob,
+      status: employee.status,
+      profileImage: null, // Reset file input
+    });
+
+    // Disable fields that cannot be edited
+    this.employeeForm.get('employeeCode')?.disable();
+    this.employeeForm.get('gender')?.disable();
+    this.employeeForm.get('dob')?.disable();
+
+    // Remove required validator for profileImage in edit mode (optional update)
+    this.employeeForm.get('profileImage')?.clearValidators();
+    this.employeeForm.get('profileImage')?.updateValueAndValidity();
   }
 
   openModal() {
     this.showModal = true;
+    this.isEditMode = false;
+    // Re-enable fields for new employee
+    this.employeeForm.get('employeeCode')?.enable();
+    this.employeeForm.get('gender')?.enable();
+    this.employeeForm.get('dob')?.enable();
+
+    // Add required validator back for profileImage
+    this.employeeForm.get('profileImage')?.setValidators(Validators.required);
+    this.employeeForm.get('profileImage')?.updateValueAndValidity();
   }
 
   closeModal() {
     this.showModal = false;
+    this.isEditMode = false;
+    this.selectedEmployee = null;
     this.employeeForm.reset({ gender: 'male', status: 'Active' });
+
+    // Re-enable fields just in case
+    this.employeeForm.get('employeeCode')?.enable();
+    this.employeeForm.get('gender')?.enable();
+    this.employeeForm.get('dob')?.enable();
   }
 
   closeViewModal() {
@@ -173,16 +217,15 @@ export class EmployeeManagementPageComponent implements OnInit {
   onSubmit() {
     if (this.employeeForm.valid) {
       console.log('Form Value:', this.employeeForm.value);
-      const formValue = this.employeeForm.value;
+      // Use getRawValue() to include disabled fields if needed
+      const formValue = this.employeeForm.getRawValue();
       const formData = new FormData();
 
       // 1. Prepare the Employee JSON Object
-      // We create a copy and remove the profileImage because that goes in a separate part
       const employeeData = { ...formValue };
       delete employeeData.profileImage;
 
       // 2. Append the 'employee' part as a JSON Blob
-      // This fixes the "Required part 'employee' is not present" error
       formData.append(
         'employee',
         new Blob([JSON.stringify(employeeData)], {
@@ -191,37 +234,51 @@ export class EmployeeManagementPageComponent implements OnInit {
       );
 
       // 3. Append the 'imageFile' part
-      // The backend expects the key to be "imageFile", not "profileImage"
-      const file = formValue.profileImage;
+      const file = this.employeeForm.get('profileImage')?.value;
       if (file) {
         formData.append('imageFile', file);
       }
 
       // 4. Send to Backend
-      const apiUrl = `${environment.apiUrl}employee`;
       const token = localStorage.getItem('authToken');
-
-      // Note: Do NOT set 'Content-Type': 'multipart/form-data' manually.
-      // The browser sets it automatically with the correct boundary when using FormData.
       const headers = {
         Authorization: `Bearer ${token}`,
       };
 
-      this.http.post(apiUrl, formData, { headers }).subscribe({
-        next: (response: any) => {
-          console.log('Employee added successfully:', response);
-          alert('Employee added successfully!');
-          this.closeModal();
-          // Optional: Refresh your list here
-          this.fetchEmployees();
-        },
-        error: (error: any) => {
-          console.error('Error adding employee:', error);
-          alert('Failed to add employee. Please try again.');
-        },
-      });
+      if (this.isEditMode && this.selectedEmployee) {
+        // UPDATE (PUT)
+        const apiUrl = `${environment.apiUrl}employee/${this.selectedEmployee.empCode}`;
+        this.http.put(apiUrl, formData, { headers }).subscribe({
+          next: (response: any) => {
+            console.log('Employee updated successfully:', response);
+            alert('Employee updated successfully!');
+            this.closeModal();
+            this.fetchEmployees();
+          },
+          error: (error: any) => {
+            console.error('Error updating employee:', error);
+            alert('Failed to update employee. Please try again.');
+          },
+        });
+      } else {
+        // CREATE (POST)
+        const apiUrl = `${environment.apiUrl}employee`;
+        this.http.post(apiUrl, formData, { headers }).subscribe({
+          next: (response: any) => {
+            console.log('Employee added successfully:', response);
+            alert('Employee added successfully!');
+            this.closeModal();
+            this.fetchEmployees();
+          },
+          error: (error: any) => {
+            console.error('Error adding employee:', error);
+            alert('Failed to add employee. Please try again.');
+          },
+        });
+      }
     } else {
       this.employeeForm.markAllAsTouched();
+      alert('Please fill in all required fields correctly.');
     }
   }
 
