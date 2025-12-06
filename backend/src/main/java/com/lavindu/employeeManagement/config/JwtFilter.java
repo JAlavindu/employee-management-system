@@ -39,9 +39,13 @@ public class JwtFilter extends OncePerRequestFilter {
             jwt = authorizationHeader.substring(7);
             try {
                 username = jwtUtil.extractUsername(jwt);
+                System.out.println("JWT Filter: Token received for user: " + username);
             } catch (Exception e) {
                 logger.error("JWT Token extraction failed: " + e.getMessage());
+                System.out.println("JWT Filter: Token extraction failed");
             }
+        } else {
+            System.out.println("JWT Filter: No Bearer token found in request to " + request.getRequestURI());
         }
         
         // Validate token and set authentication
@@ -54,10 +58,21 @@ public class JwtFilter extends OncePerRequestFilter {
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    System.out.println("JWT Filter: Authentication successful for user: " + username);
+                } else {
+                    System.out.println("JWT Filter: Token validation failed for user: " + username);
                 }
             } catch (Exception e) {
                 logger.error("User validation failed: " + e.getMessage());
+                System.out.println("JWT Filter: User validation failed: " + e.getMessage());
+                e.printStackTrace();
             }
+        } else {
+             if (username == null) {
+                 System.out.println("JWT Filter: Username is null");
+             } else {
+                 System.out.println("JWT Filter: SecurityContext already has authentication");
+             }
         }
         
         filterChain.doFilter(request, response);

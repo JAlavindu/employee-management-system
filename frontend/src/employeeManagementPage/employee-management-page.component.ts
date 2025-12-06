@@ -222,8 +222,23 @@ export class EmployeeManagementPageComponent implements OnInit {
       const formData = new FormData();
 
       // 1. Prepare the Employee JSON Object
-      const employeeData = { ...formValue };
-      delete employeeData.profileImage;
+      // Map frontend form controls to backend model fields
+      const employeeData = {
+        empCode: formValue.employeeCode,
+        firstName: formValue.firstName,
+        lastName: formValue.lastName,
+        address: formValue.address,
+        nic: formValue.nic, // Try lowercase 'nic' first, as Jackson usually maps getters like getNIC() to 'nic'
+        NIC: formValue.nic, // Send both to be safe if unsure about Jackson configuration
+        mobileNo: formValue.mobileNo,
+        gender: formValue.gender,
+        email: formValue.email,
+        designation: formValue.designation,
+        status: formValue.status,
+        dob: formValue.dob,
+      };
+
+      // delete employeeData.profileImage; // No longer needed as we constructed a new object
 
       // 2. Append the 'employee' part as a JSON Blob
       formData.append(
