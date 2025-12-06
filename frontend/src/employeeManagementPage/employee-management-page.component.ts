@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -42,6 +42,7 @@ export class EmployeeManagementPageComponent implements OnInit {
 
   private fb = inject(FormBuilder);
   private http = inject(HttpClient);
+  private cdr = inject(ChangeDetectorRef);
 
   constructor() {
     this.employeeForm = this.fb.group({
@@ -80,6 +81,8 @@ export class EmployeeManagementPageComponent implements OnInit {
         console.log('Fetched employees:', data);
         this.employees = data;
         this.filteredEmployees = [...this.employees];
+        console.log('Filtered employees updated:', this.filteredEmployees);
+        this.cdr.detectChanges();
       },
       error: (error: any) => {
         console.error('Error fetching employees:', error);

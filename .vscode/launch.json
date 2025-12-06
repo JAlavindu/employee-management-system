@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot - EmployeeManagementApplication",
+      "request": "launch",
+      "mainClass": "com.lavindu.employeeManagement.EmployeeManagementApplication",
+      "projectName": "employeeManagement",
+      "cwd": "${workspaceFolder}/backend",
+      "envFile": "${workspaceFolder}/backend/.env"
+    }
+  ]
+}
