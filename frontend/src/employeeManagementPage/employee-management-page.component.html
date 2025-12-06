@@ -167,7 +167,9 @@
 
         <div class="modal-footer">
           <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
-          <button type="submit" class="btn-save">Save Employee</button>
+          <button type="submit" class="btn-save" [disabled]="employeeForm.invalid">
+            Save Employee
+          </button>
         </div>
       </form>
     </div>

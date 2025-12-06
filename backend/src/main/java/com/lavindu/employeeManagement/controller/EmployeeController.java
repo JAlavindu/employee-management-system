@@ -4,6 +4,8 @@ import com.lavindu.employeeManagement.model.Employee;
 import com.lavindu.employeeManagement.service.EmployeeService;
 import com.lavindu.employeeManagement.service.ReportService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +42,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee")
-    public ResponseEntity<?> addEmployee(@RequestPart Employee employee, @RequestPart MultipartFile imageFile) {
+    public ResponseEntity<?> addEmployee(@Valid @RequestPart Employee employee, @RequestPart MultipartFile imageFile) {
         Employee newEmployee = null;
         try{
             newEmployee = employeeService.addEmployee(employee, imageFile);
