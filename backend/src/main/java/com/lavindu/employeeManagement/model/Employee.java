@@ -24,6 +24,7 @@ public class Employee {
     private String status;
     private String imageName;
     private String imageType;
+    private String dob;
     @Lob
     private byte[] imageData;
 }
