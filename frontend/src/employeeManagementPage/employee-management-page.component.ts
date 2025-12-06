@@ -69,46 +69,36 @@ export class EmployeeManagementPageComponent implements OnInit {
     // const apiUrl = `${environment.apiUrl}employee`;
     // this.http.get(apiUrl).subscribe(...)
 
-    // Mock Data for demonstration
-    this.employees = [
-      {
-        employeeCode: 'EMP001',
-        firstName: 'John',
-        lastName: 'Doe',
-        address: '123 Main St',
-        nic: '123456789V',
-        mobileNo: '0771234567',
-        designation: 'Software Engineer',
-        status: 'Active',
+    const apiUrl = `${environment.apiUrl}employees`;
+    const token = localStorage.getItem('authToken');
+
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    this.http.get(apiUrl, { headers }).subscribe({
+      next: (data: any) => {
+        console.log('Fetched employees:', data);
+        this.employees = data;
+        this.filteredEmployees = [...this.employees];
       },
-      {
-        employeeCode: 'EMP002',
-        firstName: 'Jane',
-        lastName: 'Smith',
-        address: '456 Oak Ave',
-        nic: '987654321V',
-        mobileNo: '0719876543',
-        designation: 'QA Engineer',
-        status: 'Inactive',
+      error: (error: any) => {
+        console.error('Error fetching employees:', error);
+        alert('Failed to fetch employees. Please try again.');
+        if (error.status === 401 || error.status === 403) {
+          alert('Session expired. Please login again.');
+
+          localStorage.removeItem('authToken');
+          // Redirect to login page
+          window.location.href = '/login';
+        }
       },
-      {
-        employeeCode: 'EMP003',
-        firstName: 'Alice',
-        lastName: 'Johnson',
-        address: '789 Pine Rd',
-        nic: '456123789V',
-        mobileNo: '0751239876',
-        designation: 'Project Manager',
-        status: 'Active',
-      },
-    ];
-    this.filteredEmployees = [...this.employees];
+    });
   }
 
   onSearch() {
     this.filteredEmployees = this.employees.filter((emp) => {
       const matchCode = this.searchCode
-        ? emp.employeeCode.toLowerCase().includes(this.searchCode.toLowerCase())
+        ? emp.empCode.toLowerCase().includes(this.searchCode.toLowerCase())
         : true;
       const matchNic = this.searchNic
         ? emp.nic.toLowerCase().includes(this.searchNic.toLowerCase())
@@ -183,6 +173,7 @@ export class EmployeeManagementPageComponent implements OnInit {
           alert('Employee added successfully!');
           this.closeModal();
           // Optional: Refresh your list here
+          this.fetchEmployees();
         },
         error: (error: any) => {
           console.error('Error adding employee:', error);
