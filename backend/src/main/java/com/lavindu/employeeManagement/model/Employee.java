@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "employees")
 public class Employee {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long empCode;
+    private String empCode;
     private String firstName;
     private String lastName;
     private String address;
