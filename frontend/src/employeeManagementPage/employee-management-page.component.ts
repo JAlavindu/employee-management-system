@@ -54,7 +54,7 @@ export class EmployeeManagementPageComponent implements OnInit {
       lastName: ['', Validators.required],
       address: ['', Validators.required],
       nic: ['', Validators.required],
-      mobileNo: ['', Validators.required],
+      mobileNo: ['', [Validators.required, Validators.pattern(/^(07\d{8}|07\d \d{3} \d{4})$/)]],
       gender: ['male', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       designation: ['', Validators.required],
