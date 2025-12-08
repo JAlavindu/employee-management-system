@@ -50,8 +50,8 @@ export class EmployeeManagementPageComponent implements OnInit {
   constructor() {
     this.employeeForm = this.fb.group({
       employeeCode: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
+      firstName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+      lastName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
       address: ['', Validators.required],
       nic: ['', [Validators.required, Validators.pattern(/^(\d{9}[vVxX]|\d{12})$/)]],
       mobileNo: ['', [Validators.required, Validators.pattern(/^(07\d{8}|07\d \d{3} \d{4})$/)]],
