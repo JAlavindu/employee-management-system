@@ -9,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { environment } from '../environments/environment';
+import { minimumAgeValidator } from './minimumAgeValidator';
 
 @Component({
   selector: 'app-employee-management-page',
@@ -59,7 +60,7 @@ export class EmployeeManagementPageComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       designation: ['', Validators.required],
       profileImage: [null, Validators.required],
-      dob: ['', Validators.required],
+      dob: ['', [ Validators.required, minimumAgeValidator(18)]],
       status: ['Active', Validators.required],
     });
   }
