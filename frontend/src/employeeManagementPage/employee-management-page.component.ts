@@ -10,11 +10,12 @@ import {
 } from '@angular/forms';
 import { environment } from '../environments/environment';
 import { minimumAgeValidator } from './minimumAgeValidator';
+import { MapPickerComponent } from '../map-picker/map-picker.component';
 
 @Component({
   selector: 'app-employee-management-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MapPickerComponent],
   templateUrl: './employee-management-page.component.html',
   styleUrls: ['./employee-management-page.component.css'],
 })
@@ -24,6 +25,7 @@ export class EmployeeManagementPageComponent implements OnInit {
   isEditMode = false;
   selectedEmployee: any = null;
   employeeForm: FormGroup;
+  showMapPicker = false;
 
   // Search State
   searchCode = '';
@@ -63,6 +65,10 @@ export class EmployeeManagementPageComponent implements OnInit {
       dob: ['', [Validators.required, minimumAgeValidator(18)]],
       status: ['Active', Validators.required],
     });
+  }
+
+  toggleMap() {
+    this.showMapPicker = !this.showMapPicker;
   }
 
   ngOnInit() {
@@ -296,6 +302,14 @@ export class EmployeeManagementPageComponent implements OnInit {
       this.employeeForm.markAllAsTouched();
       alert('Please fill in all required fields correctly.');
     }
+  }
+
+  onAddressSelected(address: string) {
+    // Update the form control with the address from the map
+    this.employeeForm.patchValue({ address: address });
+    this.employeeForm.get('address')?.markAsDirty();
+    // Optionally close map after selection
+    // this.showMapPicker = false;
   }
 
   onFileChange(event: any) {

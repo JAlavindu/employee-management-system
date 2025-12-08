@@ -330,9 +330,27 @@
             </div>
           </div>
 
-          <!-- Address -->
+          <!-- Address Field -->
           <div class="form-group full-width">
-            <label>Address</label>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 5px;
+              "
+            >
+              <label>Address</label>
+              <button
+                type="button"
+                class="btn-secondary"
+                style="padding: 2px 8px; font-size: 0.8rem"
+                (click)="toggleMap()"
+              >
+                <i class="fa fa-map-marker"></i> {{ showMapPicker ? 'Hide Map' : 'Pick on Map' }}
+              </button>
+            </div>
+
             <textarea
               formControlName="address"
               class="form-control"
@@ -341,6 +359,11 @@
                 employeeForm.get('address')?.invalid && employeeForm.get('address')?.touched
               "
             ></textarea>
+
+            <!-- Map Component Integration -->
+            <div *ngIf="showMapPicker">
+              <app-map-picker (addressSelected)="onAddressSelected($event)"></app-map-picker>
+            </div>
 
             <div
               *ngIf="employeeForm.get('address')?.invalid && employeeForm.get('address')?.touched"
