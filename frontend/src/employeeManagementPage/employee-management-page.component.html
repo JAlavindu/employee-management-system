@@ -86,15 +86,34 @@
           <!-- Employee Code -->
           <div class="form-group">
             <label>Employee Code</label>
-            <input type="text" formControlName="employeeCode" placeholder="EMP001" />
+            <input
+              type="text"
+              formControlName="employeeCode"
+              class="form-control"
+              [class.is-invalid]="
+                employeeForm.get('employeeCode')?.invalid &&
+                employeeForm.get('employeeCode')?.touched
+              "
+            />
+
             <div
               *ngIf="
                 employeeForm.get('employeeCode')?.invalid &&
                 employeeForm.get('employeeCode')?.touched
               "
-              class="error-message"
             >
-              Employee Code is required.
+              <small
+                class="error-text"
+                *ngIf="employeeForm.get('employeeCode')?.errors?.['required']"
+              >
+                Employee Code is required.
+              </small>
+              <small
+                class="error-text"
+                *ngIf="employeeForm.get('employeeCode')?.errors?.['pattern']"
+              >
+                Format must be 'EMP' followed by 3 digits (e.g., EMP001).
+              </small>
             </div>
           </div>
 
@@ -110,106 +129,195 @@
           <!-- First Name -->
           <div class="form-group">
             <label>First Name</label>
-            <input type="text" formControlName="firstName" />
+            <input
+              type="text"
+              formControlName="firstName"
+              class="form-control"
+              [class.is-invalid]="
+                employeeForm.get('firstName')?.invalid && employeeForm.get('firstName')?.touched
+              "
+            />
+
             <div
               *ngIf="
                 employeeForm.get('firstName')?.invalid && employeeForm.get('firstName')?.touched
               "
-              class="error-message"
             >
-              First Name is required.
+              <small class="error-text" *ngIf="employeeForm.get('firstName')?.errors?.['required']">
+                First Name is required.
+              </small>
+              <small class="error-text" *ngIf="employeeForm.get('firstName')?.errors?.['pattern']">
+                Only letters and spaces are allowed (no numbers).
+              </small>
             </div>
           </div>
 
           <!-- Last Name -->
           <div class="form-group">
             <label>Last Name</label>
-            <input type="text" formControlName="lastName" />
+            <input
+              type="text"
+              formControlName="lastName"
+              class="form-control"
+              [class.is-invalid]="
+                employeeForm.get('lastName')?.invalid && employeeForm.get('lastName')?.touched
+              "
+            />
+
             <div
               *ngIf="employeeForm.get('lastName')?.invalid && employeeForm.get('lastName')?.touched"
-              class="error-message"
             >
-              Last Name is required.
+              <small class="error-text" *ngIf="employeeForm.get('lastName')?.errors?.['required']">
+                Last Name is required.
+              </small>
+              <small class="error-text" *ngIf="employeeForm.get('lastName')?.errors?.['pattern']">
+                Only letters and spaces are allowed (no numbers).
+              </small>
             </div>
           </div>
 
           <!-- NIC -->
           <div class="form-group">
             <label>NIC</label>
-            <input type="text" formControlName="nic" />
-            <div
-              *ngIf="employeeForm.get('nic')?.invalid && employeeForm.get('nic')?.touched"
-              class="error-message"
-            >
-              NIC is required.
+            <input
+              type="text"
+              formControlName="nic"
+              class="form-control"
+              [class.is-invalid]="
+                employeeForm.get('nic')?.invalid && employeeForm.get('nic')?.touched
+              "
+            />
+
+            <div *ngIf="employeeForm.get('nic')?.invalid && employeeForm.get('nic')?.touched">
+              <small class="error-text" *ngIf="employeeForm.get('nic')?.errors?.['required']">
+                NIC is required.
+              </small>
+              <small class="error-text" *ngIf="employeeForm.get('nic')?.errors?.['pattern']">
+                Must be 9 digits + V/X (e.g., 123456789V) or 12 digits.
+              </small>
             </div>
           </div>
 
           <!-- Mobile No -->
           <div class="form-group">
             <label>Mobile No</label>
-            <input type="tel" formControlName="mobileNo" />
+            <input
+              type="text"
+              formControlName="mobileNo"
+              class="form-control"
+              [class.is-invalid]="
+                employeeForm.get('mobileNo')?.invalid && employeeForm.get('mobileNo')?.touched
+              "
+            />
+
             <div
               *ngIf="employeeForm.get('mobileNo')?.invalid && employeeForm.get('mobileNo')?.touched"
-              class="error-message"
             >
-              Mobile No is required.
+              <small class="error-text" *ngIf="employeeForm.get('mobileNo')?.errors?.['required']">
+                Mobile Number is required.
+              </small>
+              <small class="error-text" *ngIf="employeeForm.get('mobileNo')?.errors?.['pattern']">
+                Must start with 07 and contain 10 digits (e.g., 0712345678).
+              </small>
             </div>
           </div>
 
-          <!-- Email -->
           <div class="form-group">
-            <label>E-mail</label>
-            <input type="email" formControlName="email" />
-            <div
-              *ngIf="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched"
-              class="error-message"
-            >
-              Valid Email is required.
+            <label>Email</label>
+            <input
+              type="email"
+              formControlName="email"
+              class="form-control"
+              [class.is-invalid]="
+                employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched
+              "
+            />
+
+            <div *ngIf="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched">
+              <small class="error-text" *ngIf="employeeForm.get('email')?.errors?.['required']">
+                Email is required.
+              </small>
+              <small class="error-text" *ngIf="employeeForm.get('email')?.errors?.['email']">
+                Please enter a valid email address.
+              </small>
             </div>
           </div>
 
           <!-- Designation -->
           <div class="form-group">
             <label>Designation</label>
-            <select formControlName="designation">
+            <select
+              formControlName="designation"
+              class="form-control"
+              [class.is-invalid]="
+                employeeForm.get('designation')?.invalid && employeeForm.get('designation')?.touched
+              "
+            >
               <option value="" disabled>Select Designation</option>
-              <option *ngFor="let d of designations" [value]="d">{{ d }}</option>
+              <option *ngFor="let des of designations" [value]="des">{{ des }}</option>
             </select>
+
             <div
               *ngIf="
                 employeeForm.get('designation')?.invalid && employeeForm.get('designation')?.touched
               "
-              class="error-message"
             >
-              Designation is required.
+              <small
+                class="error-text"
+                *ngIf="employeeForm.get('designation')?.errors?.['required']"
+              >
+                Please select a designation.
+              </small>
             </div>
           </div>
 
           <!-- Date of Birth -->
           <div class="form-group">
             <label>Date of Birth</label>
-            <input type="date" formControlName="dob" />
-            <div
-              *ngIf="employeeForm.get('dob')?.invalid && employeeForm.get('dob')?.touched"
-              class="error-message"
-            >
-              Date of Birth is required.
+            <input
+              type="date"
+              formControlName="dob"
+              class="form-control"
+              [class.is-invalid]="
+                employeeForm.get('dob')?.invalid && employeeForm.get('dob')?.touched
+              "
+            />
+
+            <div *ngIf="employeeForm.get('dob')?.invalid && employeeForm.get('dob')?.touched">
+              <small class="error-text" *ngIf="employeeForm.get('dob')?.errors?.['required']">
+                Date of Birth is required.
+              </small>
+              <small class="error-text" *ngIf="employeeForm.get('dob')?.errors?.['minimumAge']">
+                Employee must be at least 18 years old.
+              </small>
             </div>
           </div>
 
           <!-- Profile Image -->
           <div class="form-group">
             <label>Profile Image</label>
-            <input type="file" (change)="onFileChange($event)" />
+            <input
+              type="file"
+              (change)="onFileChange($event)"
+              class="form-control"
+              [class.is-invalid]="
+                employeeForm.get('profileImage')?.invalid &&
+                employeeForm.get('profileImage')?.touched
+              "
+            />
+
             <div
               *ngIf="
                 employeeForm.get('profileImage')?.invalid &&
                 employeeForm.get('profileImage')?.touched
               "
-              class="error-message"
             >
-              Profile Image is required.
+              <small
+                class="error-text"
+                *ngIf="employeeForm.get('profileImage')?.errors?.['required']"
+              >
+                Profile image is required.
+              </small>
             </div>
           </div>
 
@@ -222,15 +330,47 @@
             </div>
           </div>
 
-          <!-- Address (Full Width) -->
+          <!-- Address Field -->
           <div class="form-group full-width">
-            <label>Address</label>
-            <textarea formControlName="address" rows="2"></textarea>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 5px;
+              "
+            >
+              <label>Address</label>
+              <button
+                type="button"
+                class="btn-secondary"
+                style="padding: 2px 8px; font-size: 0.8rem"
+                (click)="toggleMap()"
+              >
+                <i class="fa fa-map-marker"></i> {{ showMapPicker ? 'Hide Map' : 'Pick on Map' }}
+              </button>
+            </div>
+
+            <textarea
+              formControlName="address"
+              class="form-control"
+              rows="2"
+              [class.is-invalid]="
+                employeeForm.get('address')?.invalid && employeeForm.get('address')?.touched
+              "
+            ></textarea>
+
+            <!-- Map Component Integration -->
+            <div *ngIf="showMapPicker">
+              <app-map-picker (addressSelected)="onAddressSelected($event)"></app-map-picker>
+            </div>
+
             <div
               *ngIf="employeeForm.get('address')?.invalid && employeeForm.get('address')?.touched"
-              class="error-message"
             >
-              Address is required.
+              <small class="error-text" *ngIf="employeeForm.get('address')?.errors?.['required']">
+                Address is required.
+              </small>
             </div>
           </div>
         </div>
