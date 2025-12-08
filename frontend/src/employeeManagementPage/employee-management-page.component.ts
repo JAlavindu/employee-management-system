@@ -50,7 +50,7 @@ export class EmployeeManagementPageComponent implements OnInit {
 
   constructor() {
     this.employeeForm = this.fb.group({
-      employeeCode: ['', Validators.required],
+      employeeCode: ['', [Validators.required, Validators.pattern(/^(EMP|emp)\d{3}$/)]],
       firstName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
       lastName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
       address: ['', Validators.required],
@@ -60,7 +60,7 @@ export class EmployeeManagementPageComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       designation: ['', Validators.required],
       profileImage: [null, Validators.required],
-      dob: ['', [ Validators.required, minimumAgeValidator(18)]],
+      dob: ['', [Validators.required, minimumAgeValidator(18)]],
       status: ['Active', Validators.required],
     });
   }
