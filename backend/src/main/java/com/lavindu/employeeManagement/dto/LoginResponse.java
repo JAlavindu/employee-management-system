@@ -1,12 +1,10 @@
 package com.lavindu.employeeManagement.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class LoginResponse {
     private String token;
     private String type = "Bearer";
@@ -21,5 +19,30 @@ public class LoginResponse {
         this.fullName = fullName;
         this.email = email;
         this.role = role;
+    }
+
+    // Explicit getters for JSON serialization
+    public String getToken() {
+        return token;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getRole() {
+        return role;
     }
 }
