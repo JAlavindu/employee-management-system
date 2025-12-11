@@ -24,10 +24,10 @@ export class DashboardComponent implements OnInit {
 
   fetchDashboardStats() {
     const apiUrl = `${environment.apiUrl}dashboard-stats`;
-    const token = localStorage.getItem('authToken');
-    const headers = { Authorization: `Bearer ${token}` };
+    // const token = localStorage.getItem('authToken');
+    // const headers = { Authorization: `Bearer ${token}` };
 
-    this.http.get<any>(apiUrl, { headers }).subscribe({
+    this.http.get<any>(apiUrl).subscribe({
       next: (data) => {
         console.log('Dashboard stats received:', data);
         this.totalEmployees = data.totalEmployees;
