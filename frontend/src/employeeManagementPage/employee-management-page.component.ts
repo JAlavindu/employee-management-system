@@ -81,12 +81,12 @@ export class EmployeeManagementPageComponent implements OnInit {
     // this.http.get(apiUrl).subscribe(...)
 
     const apiUrl = `${environment.apiUrl}employees`;
-    const token = localStorage.getItem('authToken');
+    //const token = localStorage.getItem('authToken');
 
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    this.http.get(apiUrl, { headers }).subscribe({
+    // const headers = {
+    //   Authorization: `Bearer ${token}`,
+    // };
+    this.http.get(apiUrl).subscribe({
       next: (data: any) => {
         console.log('Fetched employees:', data);
         this.employees = data;
@@ -262,15 +262,15 @@ export class EmployeeManagementPageComponent implements OnInit {
       }
 
       // 4. Send to Backend
-      const token = localStorage.getItem('authToken');
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
+      // const token = localStorage.getItem('authToken');
+      // const headers = {
+      //   Authorization: `Bearer ${token}`,
+      // };
 
       if (this.isEditMode && this.selectedEmployee) {
         // UPDATE (PUT)
         const apiUrl = `${environment.apiUrl}employee/${this.selectedEmployee.empCode}`;
-        this.http.put(apiUrl, formData, { headers }).subscribe({
+        this.http.put(apiUrl, formData).subscribe({
           next: (response: any) => {
             console.log('Employee updated successfully:', response);
             alert('Employee updated successfully!');
@@ -285,7 +285,7 @@ export class EmployeeManagementPageComponent implements OnInit {
       } else {
         // CREATE (POST)
         const apiUrl = `${environment.apiUrl}employee`;
-        this.http.post(apiUrl, formData, { headers }).subscribe({
+        this.http.post(apiUrl, formData).subscribe({
           next: (response: any) => {
             console.log('Employee added successfully:', response);
             alert('Employee added successfully!');
