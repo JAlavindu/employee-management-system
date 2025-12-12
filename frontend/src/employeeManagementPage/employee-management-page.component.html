@@ -63,7 +63,6 @@
           </td>
           <td class="actions-cell">
             <button class="btn-action view" (click)="onView(emp)">View</button>
-            <button class="btn-action edit" (click)="onEdit(emp)">Edit</button>
           </td>
         </tr>
         <tr *ngIf="filteredEmployees.length === 0">
@@ -74,7 +73,273 @@
   </div>
 
   <!-- Reusable Form Fields Template -->
-  <ng-template #formField> </ng-template>
+  <ng-template #formFields>
+    <div class="form-grid" [formGroup]="employeeForm">
+      <!-- Employee Code -->
+      <div class="form-group">
+        <label>Employee Code</label>
+        <input
+          type="text"
+          formControlName="employeeCode"
+          class="form-control"
+          [class.is-invalid]="
+            employeeForm.get('employeeCode')?.invalid && employeeForm.get('employeeCode')?.touched
+          "
+        />
+
+        <div
+          *ngIf="
+            employeeForm.get('employeeCode')?.invalid && employeeForm.get('employeeCode')?.touched
+          "
+        >
+          <small class="error-text" *ngIf="employeeForm.get('employeeCode')?.errors?.['required']">
+            Employee Code is required.
+          </small>
+          <small class="error-text" *ngIf="employeeForm.get('employeeCode')?.errors?.['pattern']">
+            Format must be 'EMP' followed by 3 digits (e.g., EMP001).
+          </small>
+        </div>
+      </div>
+
+      <!-- Status -->
+      <div class="form-group">
+        <label>Status</label>
+        <select formControlName="status">
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+
+      <!-- First Name -->
+      <div class="form-group">
+        <label>First Name</label>
+        <input
+          type="text"
+          formControlName="firstName"
+          class="form-control"
+          [class.is-invalid]="
+            employeeForm.get('firstName')?.invalid && employeeForm.get('firstName')?.touched
+          "
+        />
+
+        <div
+          *ngIf="employeeForm.get('firstName')?.invalid && employeeForm.get('firstName')?.touched"
+        >
+          <small class="error-text" *ngIf="employeeForm.get('firstName')?.errors?.['required']">
+            First Name is required.
+          </small>
+          <small class="error-text" *ngIf="employeeForm.get('firstName')?.errors?.['pattern']">
+            Only letters and spaces are allowed (no numbers).
+          </small>
+        </div>
+      </div>
+
+      <!-- Last Name -->
+      <div class="form-group">
+        <label>Last Name</label>
+        <input
+          type="text"
+          formControlName="lastName"
+          class="form-control"
+          [class.is-invalid]="
+            employeeForm.get('lastName')?.invalid && employeeForm.get('lastName')?.touched
+          "
+        />
+
+        <div *ngIf="employeeForm.get('lastName')?.invalid && employeeForm.get('lastName')?.touched">
+          <small class="error-text" *ngIf="employeeForm.get('lastName')?.errors?.['required']">
+            Last Name is required.
+          </small>
+          <small class="error-text" *ngIf="employeeForm.get('lastName')?.errors?.['pattern']">
+            Only letters and spaces are allowed (no numbers).
+          </small>
+        </div>
+      </div>
+
+      <!-- NIC -->
+      <div class="form-group">
+        <label>NIC</label>
+        <input
+          type="text"
+          formControlName="nic"
+          class="form-control"
+          [class.is-invalid]="employeeForm.get('nic')?.invalid && employeeForm.get('nic')?.touched"
+        />
+
+        <div *ngIf="employeeForm.get('nic')?.invalid && employeeForm.get('nic')?.touched">
+          <small class="error-text" *ngIf="employeeForm.get('nic')?.errors?.['required']">
+            NIC is required.
+          </small>
+          <small class="error-text" *ngIf="employeeForm.get('nic')?.errors?.['pattern']">
+            Must be 9 digits + V/X (e.g., 123456789V) or 12 digits.
+          </small>
+        </div>
+      </div>
+
+      <!-- Mobile No -->
+      <div class="form-group">
+        <label>Mobile No</label>
+        <input
+          type="text"
+          formControlName="mobileNo"
+          class="form-control"
+          [class.is-invalid]="
+            employeeForm.get('mobileNo')?.invalid && employeeForm.get('mobileNo')?.touched
+          "
+        />
+
+        <div *ngIf="employeeForm.get('mobileNo')?.invalid && employeeForm.get('mobileNo')?.touched">
+          <small class="error-text" *ngIf="employeeForm.get('mobileNo')?.errors?.['required']">
+            Mobile Number is required.
+          </small>
+          <small class="error-text" *ngIf="employeeForm.get('mobileNo')?.errors?.['pattern']">
+            Must start with 07 and contain 10 digits (e.g., 0712345678).
+          </small>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input
+          type="email"
+          formControlName="email"
+          class="form-control"
+          [class.is-invalid]="
+            employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched
+          "
+        />
+
+        <div *ngIf="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched">
+          <small class="error-text" *ngIf="employeeForm.get('email')?.errors?.['required']">
+            Email is required.
+          </small>
+          <small class="error-text" *ngIf="employeeForm.get('email')?.errors?.['email']">
+            Please enter a valid email address.
+          </small>
+        </div>
+      </div>
+
+      <!-- Designation -->
+      <div class="form-group">
+        <label>Designation</label>
+        <select
+          formControlName="designation"
+          class="form-control"
+          [class.is-invalid]="
+            employeeForm.get('designation')?.invalid && employeeForm.get('designation')?.touched
+          "
+        >
+          <option value="" disabled>Select Designation</option>
+          <option *ngFor="let des of designations" [value]="des">{{ des }}</option>
+        </select>
+
+        <div
+          *ngIf="
+            employeeForm.get('designation')?.invalid && employeeForm.get('designation')?.touched
+          "
+        >
+          <small class="error-text" *ngIf="employeeForm.get('designation')?.errors?.['required']">
+            Please select a designation.
+          </small>
+        </div>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="form-group">
+        <label>Date of Birth</label>
+        <input
+          type="date"
+          formControlName="dob"
+          class="form-control"
+          [class.is-invalid]="employeeForm.get('dob')?.invalid && employeeForm.get('dob')?.touched"
+        />
+
+        <div *ngIf="employeeForm.get('dob')?.invalid && employeeForm.get('dob')?.touched">
+          <small class="error-text" *ngIf="employeeForm.get('dob')?.errors?.['required']">
+            Date of Birth is required.
+          </small>
+          <small class="error-text" *ngIf="employeeForm.get('dob')?.errors?.['minimumAge']">
+            Employee must be at least 18 years old.
+          </small>
+        </div>
+      </div>
+
+      <!-- Profile Image -->
+      <div class="form-group">
+        <label>Profile Image</label>
+        <input
+          type="file"
+          (change)="onFileChange($event)"
+          class="form-control"
+          [class.is-invalid]="
+            employeeForm.get('profileImage')?.invalid && employeeForm.get('profileImage')?.touched
+          "
+        />
+
+        <div
+          *ngIf="
+            employeeForm.get('profileImage')?.invalid && employeeForm.get('profileImage')?.touched
+          "
+        >
+          <small class="error-text" *ngIf="employeeForm.get('profileImage')?.errors?.['required']">
+            Profile image is required.
+          </small>
+        </div>
+      </div>
+
+      <!-- Gender (Full Width) -->
+      <div class="form-group full-width">
+        <label>Gender</label>
+        <div class="radio-group">
+          <label><input type="radio" value="male" formControlName="gender" /> Male</label>
+          <label><input type="radio" value="female" formControlName="gender" /> Female</label>
+        </div>
+      </div>
+
+      <!-- Address Field -->
+      <div class="form-group full-width">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+          "
+        >
+          <label>Address</label>
+          <button
+            type="button"
+            class="btn-secondary"
+            style="padding: 2px 8px; font-size: 0.8rem"
+            (click)="toggleMap()"
+          >
+            <i class="fa fa-map-marker"></i> {{ showMapPicker ? 'Hide Map' : 'Pick on Map' }}
+          </button>
+        </div>
+
+        <textarea
+          formControlName="address"
+          class="form-control"
+          rows="2"
+          [class.is-invalid]="
+            employeeForm.get('address')?.invalid && employeeForm.get('address')?.touched
+          "
+        ></textarea>
+
+        <!-- Map Component Integration -->
+        <div *ngIf="showMapPicker">
+          <app-map-picker (addressSelected)="onAddressSelected($event)"></app-map-picker>
+        </div>
+
+        <div *ngIf="employeeForm.get('address')?.invalid && employeeForm.get('address')?.touched">
+          <small class="error-text" *ngIf="employeeForm.get('address')?.errors?.['required']">
+            Address is required.
+          </small>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
   <!-- Registration Modal (Existing Code) -->
   <div class="modal-overlay" *ngIf="showModal">
     <div class="modal-content">
@@ -387,7 +652,7 @@
     </div>
   </div>
 
-  <!-- View Employee Modal -->
+  <!-- View Employee Modal
   <div class="modal-overlay" *ngIf="showViewModal">
     <div class="modal-container">
       <div class="modal-header">
@@ -431,6 +696,112 @@
         </div>
       </div>
       <div class="modal-footer">
+        <button class="btn-download pdf" (click)="downloadReport('pdf')">
+          <i class="fa fa-file-pdf-o"></i> PDF
+        </button>
+        <button class="btn-download excel" (click)="downloadReport('excel')">
+          <i class="fa fa-file-excel-o"></i> Excel
+        </button>
+        <button class="btn-secondary" (click)="closeViewModal()">Close</button>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- View/Edit Employee Modal -->
+  <div class="modal-overlay" *ngIf="showViewModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <!-- Tabs for View/Edit -->
+        <div class="modal-tabs" style="display: flex; gap: 10px">
+          <button
+            class="tab-btn"
+            [class.active]="activeTab === 'details'"
+            (click)="setActiveTab('details')"
+            style="
+              padding: 8px 16px;
+              border: none;
+              background: none;
+              cursor: pointer;
+              border-bottom: 2px solid transparent;
+            "
+            [style.border-bottom-color]="activeTab === 'details' ? '#007bff' : 'transparent'"
+            [style.font-weight]="activeTab === 'details' ? 'bold' : 'normal'"
+          >
+            Details
+          </button>
+          <button
+            class="tab-btn"
+            [class.active]="activeTab === 'edit'"
+            (click)="setActiveTab('edit')"
+            style="
+              padding: 8px 16px;
+              border: none;
+              background: none;
+              cursor: pointer;
+              border-bottom: 2px solid transparent;
+            "
+            [style.border-bottom-color]="activeTab === 'edit' ? '#007bff' : 'transparent'"
+            [style.font-weight]="activeTab === 'edit' ? 'bold' : 'normal'"
+          >
+            Edit
+          </button>
+        </div>
+        <button class="close-btn" (click)="closeViewModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- DETAILS TAB CONTENT -->
+        <div *ngIf="activeTab === 'details' && selectedEmployee">
+          <div class="detail-row">
+            <strong>Employee Code:</strong> <span>{{ selectedEmployee.empCode }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Full Name:</strong>
+            <span>{{ selectedEmployee.firstName }} {{ selectedEmployee.lastName }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>NIC:</strong> <span>{{ selectedEmployee.nic }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Designation:</strong> <span>{{ selectedEmployee.designation }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Email:</strong> <span>{{ selectedEmployee.email }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Mobile No:</strong> <span>{{ selectedEmployee.mobileNo }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Gender:</strong> <span>{{ selectedEmployee.gender }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Date of Birth:</strong> <span>{{ selectedEmployee.dob }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Address:</strong> <span>{{ selectedEmployee.address }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Status:</strong> <span>{{ selectedEmployee.status }}</span>
+          </div>
+        </div>
+
+        <!-- EDIT TAB CONTENT -->
+        <div *ngIf="activeTab === 'edit'">
+          <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+            <!-- Reuse the form fields template -->
+            <ng-container *ngTemplateOutlet="formFields"></ng-container>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn-save" [disabled]="employeeForm.invalid">
+                Update Employee
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer only for Details Tab -->
+      <div class="modal-footer" *ngIf="activeTab === 'details'">
         <button class="btn-download pdf" (click)="downloadReport('pdf')">
           <i class="fa fa-file-pdf-o"></i> PDF
         </button>
