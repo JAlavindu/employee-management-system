@@ -43,11 +43,13 @@
 
 .modal-container {
   background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 500px;
-  max-width: 90%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 800px; /* Increased from 500px to 800px */
+  max-height: 90vh; /* Added max-height for scrolling on small screens */
+  overflow-y: auto; /* Enable scrolling */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content {

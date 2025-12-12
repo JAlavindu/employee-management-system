@@ -26,6 +26,7 @@ export class EmployeeManagementPageComponent implements OnInit {
   selectedEmployee: any = null;
   employeeForm: FormGroup;
   showMapPicker = false;
+  activeTab: string = 'details';
 
   // Search State
   searchCode = '';
@@ -128,6 +129,37 @@ export class EmployeeManagementPageComponent implements OnInit {
     console.log('View employee:', employee);
     this.selectedEmployee = employee;
     this.showViewModal = true;
+    this.activeTab = 'details';
+  }
+
+  setActiveTab(tabName: string) {
+    this.activeTab = tabName;
+
+    if (tabName === 'edit' && this.selectedEmployee) {
+      this.isEditMode = true;
+      console.log('Patching form with:', this.selectedEmployee);
+      this.employeeForm.patchValue({
+        employeeCode: this.selectedEmployee.empCode,
+        firstName: this.selectedEmployee.firstName,
+        lastName: this.selectedEmployee.lastName,
+        address: this.selectedEmployee.address,
+        nic: this.selectedEmployee.nic,
+        mobileNo: this.selectedEmployee.mobileNo,
+        gender: this.selectedEmployee.gender,
+        email: this.selectedEmployee.email,
+        designation: this.selectedEmployee.designation,
+        profileImage: null,
+        dob: this.selectedEmployee.dob,
+        status: this.selectedEmployee.status,
+      });
+
+      this.employeeForm.get('employeeCode')?.disable();
+      this.employeeForm.get('gender')?.disable();
+      this.employeeForm.get('dob')?.disable();
+      this.employeeForm.get('profileImage')?.clearValidators;
+    }
+
+    // if( tabName === 'view' && this.selectedEmployee)
   }
 
   downloadReport(format: 'pdf' | 'excel') {
