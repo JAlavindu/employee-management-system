@@ -73,6 +73,8 @@
     </table>
   </div>
 
+  <!-- Reusable Form Fields Template -->
+  <ng-template #formField> </ng-template>
   <!-- Registration Modal (Existing Code) -->
   <div class="modal-overlay" *ngIf="showModal">
     <div class="modal-content">
@@ -390,6 +392,9 @@
     <div class="modal-container">
       <div class="modal-header">
         <h2>Employee Details</h2>
+        <div>
+          <button (click)="onEdit()"></button>
+        </div>
         <button class="close-btn" (click)="closeViewModal()">&times;</button>
       </div>
       <div class="modal-body" *ngIf="selectedEmployee">
