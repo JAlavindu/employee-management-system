@@ -28,8 +28,8 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        // Skip JWT filter for public endpoints
-        return path.startsWith("/api/auth/") || path.equals("/api/hello");
+        // Skip JWT filter for public endpoints and OPTIONS requests
+        return path.startsWith("/api/auth/") || path.equals("/api/hello") || "OPTIONS".equalsIgnoreCase(request.getMethod());
     }
 
     @Override
@@ -68,6 +68,9 @@ public class JwtFilter extends OncePerRequestFilter {
                     System.out.println("JWT Filter: Authentication successful for user: " + username);
                 } else {
                     System.out.println("JWT Filter: Token validation failed for user: " + username);
+                    System.out.println("JWT Filter: Token expired? " + jwtUtil.isTokenExpired(jwt));
+                    System.out.println("JWT Filter: Username matches? " + username.equals(userDetails.getUsername()));
+                    System.out.println("JWT Filter: Token username: '" + username + "', UserDetails username: '" + userDetails.getUsername() + "'");
                 }
             } catch (Exception e) {
                 logger.error("User validation failed: " + e.getMessage());
