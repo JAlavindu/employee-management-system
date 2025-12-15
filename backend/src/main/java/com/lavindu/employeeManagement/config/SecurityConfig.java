@@ -34,6 +34,9 @@ public class SecurityConfig {
     
     @Autowired
     private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2LoginSuccessHandler;
     
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -62,6 +65,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()  // Allow login/register and hello without authentication
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Allow preflight checks
                         .anyRequest().authenticated()  // All other requests need authentication
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .successHandler(oAuth2LoginSuccessHandler) // Use our custom handler on success
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // No session

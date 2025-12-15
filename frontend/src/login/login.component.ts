@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, Router } from '@angular/router';
+import { RouterLink, Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
@@ -18,6 +18,24 @@ export class LoginComponent {
 
   private http = inject(HttpClient);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  ngOnInit() {
+    //check if URL has tokens
+    this.route.queryParams.subscribe((params) => {
+      const accessToken = params['accessToken'];
+      const refreshToken = params['refreshToken'];
+
+      if (accessToken && refreshToken) {
+        //store tokens in localstorage
+        localStorage.setItem('authToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+
+        console.log('OAuth LOgin Successful');
+        this.router.navigate(['/dashboard']);
+      }
+    });
+  }
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -40,5 +58,11 @@ export class LoginComponent {
         alert('Login failed. Please check your credentials and try again.');
       },
     });
+  }
+
+  loginWithGoogle() {
+    // Redirects browser to Spring Boot's OAuth endpoint
+    // Spring Boot will then redirect to Google
+    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
   }
 }
