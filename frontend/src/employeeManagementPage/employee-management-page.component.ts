@@ -156,7 +156,7 @@ export class EmployeeManagementPageComponent implements OnInit {
       this.employeeForm.get('employeeCode')?.disable();
       this.employeeForm.get('gender')?.disable();
       this.employeeForm.get('dob')?.disable();
-      this.employeeForm.get('profileImage')?.clearValidators;
+      this.employeeForm.get('profileImage')?.clearValidators();
     }
 
     // if( tabName === 'view' && this.selectedEmployee)
@@ -168,10 +168,10 @@ export class EmployeeManagementPageComponent implements OnInit {
     const empCode = this.selectedEmployee.empCode;
     // Construct URL: e.g., /api/employee/{empCode}/download/pdf
     const apiUrl = `${environment.apiUrl}employee/${empCode}/download/${format}`;
-    const token = localStorage.getItem('authToken');
-    const headers = { Authorization: `Bearer ${token}` };
+    //const token = localStorage.getItem('authToken');
+    //const headers = { Authorization: `Bearer ${token}` };
 
-    this.http.get(apiUrl, { headers, responseType: 'blob' }).subscribe({
+    this.http.get(apiUrl, { responseType: 'blob' }).subscribe({
       next: (blob: Blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');

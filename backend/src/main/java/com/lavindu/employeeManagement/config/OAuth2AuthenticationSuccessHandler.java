@@ -54,7 +54,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             user.setRole("USER"); // Default role
             user.setPassword(""); // No password for OAuth users
             user.setFullName(name);
-            // user.setCreatedAt();
             userRepo.save(user);
         }
 
@@ -63,7 +62,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String refreshToken = jwtUtil.generateRefreshToken(user.getUsername());
 
         // 5. Construct the redirect URL to Angular
-        // We pass tokens as query parameters (Not HttpOnly, as requested)
+        // We pass tokens as query parameters 
         String targetUrl = UriComponentsBuilder.fromUriString("http://localhost:4200/login")
                 .queryParam("accessToken", accessToken)
                 .queryParam("refreshToken", refreshToken)
