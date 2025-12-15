@@ -48,11 +48,41 @@ public class AuthService {
             String token = jwtUtil.generateToken(loginRequest.getUsername());
             
             // Return response
-            return new LoginResponse(token, user.getUsername(), user.getFullName(), user.getEmail(), user.getRole());
+            LoginResponse response = new LoginResponse();
+            response.setToken(token);
+            response.setUsername(user.getUsername());
+            response.setFullName(user.getFullName());
+            response.setEmail(user.getEmail());
+            response.setRole(user.getRole());
+            return response;
             
         } catch (BadCredentialsException e) {
             throw new BadCredentialsException("Invalid username or password");
         }
+    }
+
+    public LoginResponse refreshToken(String refreshToken){
+
+
+        // validate the refresh token
+        if(jwtUtil.validateToken(refreshToken)){
+            //extract username
+            String username = jwtUtil.extractUsername(refreshToken);
+
+        //generate new access token
+        String newAccesToken = jwtUtil.generateToken(username);
+
+        LoginResponse response = new LoginResponse();
+        response.setToken(newAccesToken);
+        // Assuming you might want to set other fields or just return the token.
+        // If LoginResponse doesn't have a refreshToken field, you might need to adjust this logic.
+        // Based on the login method, it seems we just set properties.
+        return response;
+        }
+        throw new RuntimeException("Invalid Refresh token");
+        
+
+        
     }
     
     // Register new user (optional - for testing)

@@ -12,13 +12,17 @@ public class LoginResponse {
     private String fullName;
     private String email;
     private String role;
+    private String accessToken;
+    private String refreshToken;
     
-    public LoginResponse(String token, String username, String fullName, String email, String role) {
+    public LoginResponse(String token, String username, String fullName, String email, String role, String accessToken, String refreshToken) {
         this.token = token;
         this.username = username;
         this.fullName = fullName;
         this.email = email;
         this.role = role;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 
     // Explicit getters for JSON serialization
@@ -45,4 +49,9 @@ public class LoginResponse {
     public String getRole() {
         return role;
     }
+
+     public String getAccessToken() { return accessToken; }
+    public void setAccessToken(String accessToken) { this.accessToken = accessToken; }
+    public String getRefreshToken() { return refreshToken; }
+    public void setRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
 }
