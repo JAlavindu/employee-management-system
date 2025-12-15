@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                user.getEnabled(),
+                Boolean.TRUE.equals(user.getEnabled()),
                 true,
                 true,
                 true,
