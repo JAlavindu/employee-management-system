@@ -3,6 +3,7 @@ package com.lavindu.employeeManagement.controller;
 import com.lavindu.employeeManagement.dto.ErrorResponse;
 import com.lavindu.employeeManagement.dto.LoginRequest;
 import com.lavindu.employeeManagement.dto.LoginResponse;
+import com.lavindu.employeeManagement.dto.RefreshTokenRequest;
 import com.lavindu.employeeManagement.model.User;
 import com.lavindu.employeeManagement.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -67,6 +69,13 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }
     }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<LoginResponse> refresh(@RequestBody RefreshTokenRequest req) {
+        
+        return ResponseEntity.ok(authService.refreshToken(req.getRefreshToken()));
+    }
+    
     
     // Handle validation errors
     @ExceptionHandler(MethodArgumentNotValidException.class)

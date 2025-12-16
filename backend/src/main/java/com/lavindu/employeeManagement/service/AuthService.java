@@ -70,14 +70,10 @@ public class AuthService {
             String username = jwtUtil.extractUsername(refreshToken);
 
         //generate new access token
-        String newAccesToken = jwtUtil.generateToken(username);
+        String newAccessToken = jwtUtil.generateToken(username);
 
-        LoginResponse response = new LoginResponse();
-        response.setToken(newAccesToken);
-        // Assuming you might want to set other fields or just return the token.
-        // If LoginResponse doesn't have a refreshToken field, you might need to adjust this logic.
-        // Based on the login method, it seems we just set properties.
-        return response;
+        // 4. Return new pair (optionally rotate refresh token too, here we just return the old one)
+            return new LoginResponse(newAccessToken, refreshToken);
         }
         throw new RuntimeException("Invalid Refresh token");
         

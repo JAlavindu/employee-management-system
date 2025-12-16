@@ -50,6 +50,7 @@ export class LoginComponent {
       next: (response: any) => {
         console.log('Login successful:', response);
         localStorage.setItem('authToken', response.token);
+        localStorage.setItem('refreshToken', response.refreshToken);
 
         this.router.navigate(['/dashboard']);
       },
