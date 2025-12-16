@@ -1,4 +1,9 @@
-import { HttpClient, HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import {
+  HttpBackend,
+  HttpClient,
+  HttpErrorResponse,
+  HttpInterceptorFn,
+} from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, switchMap, throwError } from 'rxjs';
@@ -6,7 +11,11 @@ import { environment } from '../../environments/environment';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
-  const http = inject(HttpClient);
+  // Use HttpBackend to create a client that bypasses interceptors
+  // This prevents the refresh request from triggering this interceptor again (infinite loop)
+  const httpBackend = inject(HttpBackend);
+  const http = new HttpClient(httpBackend);
+
   const token = localStorage.getItem('authToken');
 
   console.log('Interceptor: URL =', req.url, 'Token found? =', !!token);
@@ -18,7 +27,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    return next(modifiedReq);
   }
 
   // Handle the request and catch errors
@@ -30,15 +38,17 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
         if (refreshToken) {
           // Attempt to refresh token
-          // We use a new HttpClient call here to avoid circular dependency loops
+          // We use the 'http' instance created from HttpBackend to avoid circular dependency loops
           return http
-            .post<any>(`${environment.apiUrl}/auth/refresh`, { refreshToken: refreshToken })
+            .post<any>(`${environment.apiUrl}auth/refresh`, { refreshToken: refreshToken })
             .pipe(
               switchMap((res: any) => {
                 // Success: Update tokens
                 localStorage.setItem('authToken', res.accessToken);
                 // If backend rotates refresh token, update it too:
-                // localStorage.setItem('refreshToken', res.refreshToken);
+                if (res.refreshToken) {
+                  localStorage.setItem('refreshToken', res.refreshToken);
+                }
 
                 // Retry the ORIGINAL request with the new token
                 const newRequest = req.clone({
