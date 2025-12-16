@@ -14,6 +14,11 @@ public class LoginResponse {
     private String role;
     private String accessToken;
     private String refreshToken;
+
+    public LoginResponse( String accessToken, String refreshToken){
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
+    }
     
     public LoginResponse(String token, String username, String fullName, String email, String role, String accessToken, String refreshToken) {
         this.token = token;
