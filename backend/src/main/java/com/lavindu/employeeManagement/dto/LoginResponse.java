@@ -20,14 +20,13 @@ public class LoginResponse {
         this.refreshToken = refreshToken;
     }
     
-    public LoginResponse(String token, String username, String fullName, String email, String role, String accessToken, String refreshToken) {
+    public LoginResponse(String token, String username, String fullName, String email, String role) {
         this.token = token;
         this.username = username;
         this.fullName = fullName;
         this.email = email;
         this.role = role;
-        this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
+
     }
 
     // Explicit getters for JSON serialization
