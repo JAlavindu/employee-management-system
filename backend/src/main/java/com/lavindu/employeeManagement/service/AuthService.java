@@ -48,12 +48,8 @@ public class AuthService {
             String token = jwtUtil.generateToken(loginRequest.getUsername());
             
             // Return response
-            LoginResponse response = new LoginResponse();
-            response.setToken(token);
-            response.setUsername(user.getUsername());
-            response.setFullName(user.getFullName());
-            response.setEmail(user.getEmail());
-            response.setRole(user.getRole());
+            LoginResponse response = new LoginResponse(token, user.getUsername(), user.getFullName(), user.getEmail(), user.getRole());
+
             return response;
             
         } catch (BadCredentialsException e) {
@@ -69,10 +65,10 @@ public class AuthService {
             //extract username
             String username = jwtUtil.extractUsername(refreshToken);
 
-        //generate new access token
-        String newAccessToken = jwtUtil.generateToken(username);
+            //generate new access token
+            String newAccessToken = jwtUtil.generateToken(username);
 
-        // 4. Return new pair (optionally rotate refresh token too, here we just return the old one)
+            // 4. Return new pair (optionally rotate refresh token too, here we just return the old one)
             return new LoginResponse(newAccessToken, refreshToken);
         }
         throw new RuntimeException("Invalid Refresh token");
