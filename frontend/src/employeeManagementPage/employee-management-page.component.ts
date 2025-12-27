@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -11,15 +11,18 @@ import {
 import { environment } from '../environments/environment';
 import { minimumAgeValidator } from './minimumAgeValidator';
 import { MapPickerComponent } from '../map-picker/map-picker.component';
+import { EventEmitter } from '@angular/core';
+import { RegistrationModal } from './registration-modal/registration-modal';
 
 @Component({
   selector: 'app-employee-management-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MapPickerComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MapPickerComponent, RegistrationModal],
   templateUrl: './employee-management-page.component.html',
   styleUrls: ['./employee-management-page.component.css'],
 })
 export class EmployeeManagementPageComponent implements OnInit {
+  @Output() showModalChange = new EventEmitter<boolean>();
   showModal = false;
   showViewModal = false;
   isEditMode = false;
@@ -224,6 +227,7 @@ export class EmployeeManagementPageComponent implements OnInit {
   }
 
   openModal() {
+    this.showModalChange.emit(true);
     this.showModal = true;
     this.isEditMode = false;
     // Re-enable fields for new employee
@@ -236,8 +240,9 @@ export class EmployeeManagementPageComponent implements OnInit {
     this.employeeForm.get('profileImage')?.updateValueAndValidity();
   }
 
-  closeModal() {
-    this.showModal = false;
+  closeModal(event?: boolean) {
+    this.showModalChange.emit(false);
+    this.showModal = event ?? false;
     this.isEditMode = false;
     this.selectedEmployee = null;
     this.employeeForm.reset({ gender: 'male', status: 'Active' });

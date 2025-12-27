@@ -1,5 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-registration-modal',
@@ -10,10 +11,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class RegistrationModal {
   @Output() closeModal = new EventEmitter<boolean>();
   @Input() isModalOpen!: boolean;
+  @Input() employeeForm!: FormGroup;
 
-  // modal=false;
+  viewModal=false;
 
-  closeModalFunc(){
+  closeModalFunc() {
     this.closeModal.emit(false);
   }
 }
