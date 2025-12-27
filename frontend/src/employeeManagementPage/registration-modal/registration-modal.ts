@@ -7,20 +7,28 @@ import { FormBuilder,
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { fetchEmployees } from '../fetchEmployees';
+import { onFileChange } from '../onFileChange';
+import { MapPickerComponent } from '../../map-picker/map-picker.component';
 
 @Component({
   selector: 'app-registration-modal',
   templateUrl: './registration-modal.html',
   styleUrls: ['./registration-modal.css'],
-  imports: [NgIf, ReactiveFormsModule, FormsModule],
+  imports: [NgIf, ReactiveFormsModule, FormsModule, MapPickerComponent],
 })
 export class RegistrationModal {
   @Output() closeModal = new EventEmitter<boolean>();
   @Input() isModalOpen!: boolean;
   @Input() employeeForm!: FormGroup;
+  @Input() callToggleMap!: () => void;
 
   viewModal=false;
   private http = inject(HttpClient);
+  @Input() showMapPicker=false;
+
+  toggleMapPicker(){
+    this.callToggleMap();
+  }
 
   closeModalFunc() {
     this.closeModal.emit(false);
@@ -116,5 +124,9 @@ export class RegistrationModal {
           this.employeeForm.markAllAsTouched();
           alert('Please fill in all required fields correctly.');
         }
+  }
+
+  fileChange(event: Event) {
+    onFileChange.call(this, event, this);
   }
 }

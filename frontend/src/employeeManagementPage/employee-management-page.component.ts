@@ -14,6 +14,7 @@ import { MapPickerComponent } from '../map-picker/map-picker.component';
 import { EventEmitter } from '@angular/core';
 import { RegistrationModal } from './registration-modal/registration-modal';
 import { fetchEmployees } from './fetchEmployees';
+import { onFileChange } from './onFileChange';
 
 @Component({
   selector: 'app-employee-management-page',
@@ -24,6 +25,7 @@ import { fetchEmployees } from './fetchEmployees';
 })
 export class EmployeeManagementPageComponent implements OnInit {
   @Output() showModalChange = new EventEmitter<boolean>();
+  
   showModal = false;
   showViewModal = false;
   isEditMode = false;
@@ -113,6 +115,10 @@ export class EmployeeManagementPageComponent implements OnInit {
   //     },
   //   });
   // }
+
+  fileChange(event: Event) {
+    onFileChange.call(this, event, this);
+  }
 
   onSearch() {
     this.filteredEmployees = this.employees.filter((emp) => {
@@ -351,12 +357,12 @@ export class EmployeeManagementPageComponent implements OnInit {
     // this.showMapPicker = false;
   }
 
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.employeeForm.patchValue({ profileImage: file });
-    } else {
-      this.employeeForm.patchValue({ profileImage: null });
-    }
-  }
+  // onFileChange(event: any) {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     this.employeeForm.patchValue({ profileImage: file });
+  //   } else {
+  //     this.employeeForm.patchValue({ profileImage: null });
+  //   }
+  // }
 }
