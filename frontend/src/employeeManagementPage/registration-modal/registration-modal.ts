@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
-import { FormBuilder,
+import { 
   FormGroup,
   FormsModule,
   ReactiveFormsModule, } from '@angular/forms';
@@ -21,6 +21,7 @@ export class RegistrationModal {
   @Input() isModalOpen!: boolean;
   @Input() employeeForm!: FormGroup;
   @Input() callToggleMap!: () => void;
+  @Input() designations: string[] = [];
 
   viewModal=false;
   private http = inject(HttpClient);
@@ -73,38 +74,6 @@ export class RegistrationModal {
           if (file) {
             formData.append('imageFile', file);
           }
-    
-          // if (this.isEditMode && this.selectedEmployee) {
-          //   // UPDATE (PUT)
-          //   const apiUrl = `${environment.apiUrl}employee/${this.selectedEmployee.empCode}`;
-          //   this.http.put(apiUrl, formData).subscribe({
-          //     next: (response: any) => {
-          //       console.log('Employee updated successfully:', response);
-          //       alert('Employee updated successfully!');
-          //       this.closeModal();
-          //       this.fetchEmployees();
-          //     },
-          //     error: (error: any) => {
-          //       console.error('Error updating employee:', error);
-          //       alert('Failed to update employee. Please try again.');
-          //     },
-          //   });
-          // } else {
-          //   // CREATE (POST)
-          //   const apiUrl = `${environment.apiUrl}employee`;
-          //   this.http.post(apiUrl, formData).subscribe({
-          //     next: (response: any) => {
-          //       console.log('Employee added successfully:', response);
-          //       alert('Employee added successfully!');
-          //       this.closeModal();
-          //       this.fetchEmployees();
-          //     },
-          //     error: (error: any) => {
-          //       console.error('Error adding employee:', error);
-          //       alert('Failed to add employee. Please try again.');
-          //     },
-          //   });
-          // }
 
           // CREATE (POST)
             const apiUrl = `${environment.apiUrl}employee`;
@@ -124,6 +93,14 @@ export class RegistrationModal {
           this.employeeForm.markAllAsTouched();
           alert('Please fill in all required fields correctly.');
         }
+  }
+
+  onAddressSelected(address: string) {
+    // Update the form control with the address from the map
+    this.employeeForm.patchValue({ address: address });
+    this.employeeForm.get('address')?.markAsDirty();
+    // Optionally close map after selection
+    // this.showMapPicker = false;
   }
 
   fileChange(event: Event) {

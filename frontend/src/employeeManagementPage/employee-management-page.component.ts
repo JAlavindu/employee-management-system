@@ -25,7 +25,7 @@ import { onFileChange } from './onFileChange';
 })
 export class EmployeeManagementPageComponent implements OnInit {
   @Output() showModalChange = new EventEmitter<boolean>();
-  
+
   showModal = false;
   showViewModal = false;
   isEditMode = false;
@@ -356,13 +356,4 @@ export class EmployeeManagementPageComponent implements OnInit {
     // Optionally close map after selection
     // this.showMapPicker = false;
   }
-
-  // onFileChange(event: any) {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     this.employeeForm.patchValue({ profileImage: file });
-  //   } else {
-  //     this.employeeForm.patchValue({ profileImage: null });
-  //   }
-  // }
 }

@@ -12,6 +12,7 @@ import * as L from 'leaflet';
 })
 export class MapPickerComponent implements OnInit, OnDestroy {
   @Output() addressSelected = new EventEmitter<string>();
+  
 
   private map: L.Map | undefined;
   private marker: L.Marker | undefined;

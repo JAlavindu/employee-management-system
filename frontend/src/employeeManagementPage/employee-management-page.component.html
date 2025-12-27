@@ -651,7 +651,7 @@
       <!-- </form>
     </div> -->
   <!-- </div> -->
-  <app-registration-modal [isModalOpen]="showModal" (closeModal)="closeModal($event)" [employeeForm]="employeeForm" (callToggleMap)="toggleMap()" [showMapPicker]="showMapPicker"></app-registration-modal>
+  <app-registration-modal [isModalOpen]="showModal" (closeModal)="closeModal($event)" [employeeForm]="employeeForm" [callToggleMap]="toggleMap" [showMapPicker]="showMapPicker" [designations]="designations"></app-registration-modal>
 
   <!-- View/Edit Employee Modal -->
   <div class="modal-overlay" *ngIf="showViewModal">
