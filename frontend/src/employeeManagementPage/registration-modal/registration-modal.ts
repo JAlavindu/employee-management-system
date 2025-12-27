@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { NgIf, CommonModule } from '@angular/common';
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { 
   FormGroup,
@@ -12,9 +12,10 @@ import { MapPickerComponent } from '../../map-picker/map-picker.component';
 
 @Component({
   selector: 'app-registration-modal',
+  standalone: true,
   templateUrl: './registration-modal.html',
   styleUrls: ['./registration-modal.css'],
-  imports: [NgIf, ReactiveFormsModule, FormsModule, MapPickerComponent],
+  imports: [CommonModule, NgIf, ReactiveFormsModule, FormsModule, MapPickerComponent],
 })
 export class RegistrationModal {
   @Output() closeModal = new EventEmitter<boolean>();
