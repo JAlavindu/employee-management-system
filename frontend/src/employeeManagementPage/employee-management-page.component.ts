@@ -13,6 +13,7 @@ import { minimumAgeValidator } from './minimumAgeValidator';
 import { MapPickerComponent } from '../map-picker/map-picker.component';
 import { EventEmitter } from '@angular/core';
 import { RegistrationModal } from './registration-modal/registration-modal';
+import { fetchEmployees } from './fetchEmployees';
 
 @Component({
   selector: 'app-employee-management-page',
@@ -76,41 +77,42 @@ export class EmployeeManagementPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fetchEmployees();
+    //this.fetchEmployees();
+    fetchEmployees.call(this);
   }
 
-  fetchEmployees() {
-    // TODO: Replace with actual API call
-    // const apiUrl = `${environment.apiUrl}employee`;
-    // this.http.get(apiUrl).subscribe(...)
+  // fetchEmployees() {
+  //   // TODO: Replace with actual API call
+  //   // const apiUrl = `${environment.apiUrl}employee`;
+  //   // this.http.get(apiUrl).subscribe(...)
 
-    const apiUrl = `${environment.apiUrl}employees`;
-    //const token = localStorage.getItem('authToken');
+  //   const apiUrl = `${environment.apiUrl}employees`;
+  //   //const token = localStorage.getItem('authToken');
 
-    // const headers = {
-    //   Authorization: `Bearer ${token}`,
-    // };
-    this.http.get(apiUrl).subscribe({
-      next: (data: any) => {
-        console.log('Fetched employees:', data);
-        this.employees = data;
-        this.filteredEmployees = [...this.employees];
-        console.log('Filtered employees updated:', this.filteredEmployees);
-        this.cdr.detectChanges();
-      },
-      error: (error: any) => {
-        console.error('Error fetching employees:', error);
-        alert('Failed to fetch employees. Please try again.');
-        if (error.status === 401 || error.status === 403) {
-          alert('Session expired. Please login again.');
+  //   // const headers = {
+  //   //   Authorization: `Bearer ${token}`,
+  //   // };
+  //   this.http.get(apiUrl).subscribe({
+  //     next: (data: any) => {
+  //       console.log('Fetched employees:', data);
+  //       this.employees = data;
+  //       this.filteredEmployees = [...this.employees];
+  //       console.log('Filtered employees updated:', this.filteredEmployees);
+  //       this.cdr.detectChanges();
+  //     },
+  //     error: (error: any) => {
+  //       console.error('Error fetching employees:', error);
+  //       alert('Failed to fetch employees. Please try again.');
+  //       if (error.status === 401 || error.status === 403) {
+  //         alert('Session expired. Please login again.');
 
-          localStorage.removeItem('authToken');
-          // Redirect to login page
-          window.location.href = '/login';
-        }
-      },
-    });
-  }
+  //         localStorage.removeItem('authToken');
+  //         // Redirect to login page
+  //         window.location.href = '/login';
+  //       }
+  //     },
+  //   });
+  // }
 
   onSearch() {
     this.filteredEmployees = this.employees.filter((emp) => {
@@ -312,7 +314,7 @@ export class EmployeeManagementPageComponent implements OnInit {
             console.log('Employee updated successfully:', response);
             alert('Employee updated successfully!');
             this.closeModal();
-            this.fetchEmployees();
+            fetchEmployees();
           },
           error: (error: any) => {
             console.error('Error updating employee:', error);
@@ -327,7 +329,7 @@ export class EmployeeManagementPageComponent implements OnInit {
             console.log('Employee added successfully:', response);
             alert('Employee added successfully!');
             this.closeModal();
-            this.fetchEmployees();
+            fetchEmployees();
           },
           error: (error: any) => {
             console.error('Error adding employee:', error);
