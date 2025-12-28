@@ -16,11 +16,12 @@ import { RegistrationModal } from './registration-modal/registration-modal';
 import { fetchEmployees } from './utils/fetchEmployees';
 import { onFileChange } from './utils/onFileChange';
 import { SearchComponent } from './search-component/search-component';
+import { EmployeeViewTableComponent } from './employee-view-table-component/employee-view-table-component';
 
 @Component({
   selector: 'app-employee-management-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MapPickerComponent, RegistrationModal, SearchComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MapPickerComponent, RegistrationModal, SearchComponent, EmployeeViewTableComponent],
   templateUrl: './employee-management-page.component.html',
   styleUrls: ['./employee-management-page.component.css'],
 })

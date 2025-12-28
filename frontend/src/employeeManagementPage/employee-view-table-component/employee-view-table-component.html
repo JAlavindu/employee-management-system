@@ -1,1 +1,37 @@
-<p>employee-view-table-component works!</p>
+<div class="table-container">
+    <table class="employee-table">
+      <thead>
+        <tr>
+          <th>Employee Code</th>
+          <th>Full Name</th>
+          <th>Address</th>
+          <th>NIC</th>
+          <th>Mobile No</th>
+          <th>Designation</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emp of filteredEmployees">
+          <td>{{ emp.empCode }}</td>
+          <td>{{ emp.firstName }} {{ emp.lastName }}</td>
+          <td>{{ emp.address }}</td>
+          <td>{{ emp.nic }}</td>
+          <td>{{ emp.mobileNo }}</td>
+          <td>{{ emp.designation }}</td>
+          <td>
+            <span class="status-badge" [class]="emp.status.toLowerCase()">
+              {{ emp.status }}
+            </span>
+          </td>
+          <td class="actions-cell">
+            <button class="btn-action view" (click)="onView(emp)">View</button>
+          </td>
+        </tr>
+        <tr *ngIf="filteredEmployees.length === 0">
+          <td colspan="8" class="no-data">No employees found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

@@ -4,74 +4,11 @@
     <button class="btn-new" (click)="openModal()">+ New Employee</button>
   </div>
 
-  <!-- Search Section -->
-  <!-- <div class="search-panel">
-    <div class="search-grid">
-      <div class="search-group">
-        <label>Employee Code</label>
-        <input type="text" [(ngModel)]="searchCode" placeholder="Search by Code" />
-      </div>
-      <div class="search-group">
-        <label>Employee NIC</label>
-        <input type="text" [(ngModel)]="searchNic" placeholder="Search by NIC" />
-      </div>
-      <div class="search-group">
-        <label>Employee Name</label>
-        <input type="text" [(ngModel)]="searchName" placeholder="Search by Name" />
-      </div>
-      <div class="search-group">
-        <label>Status</label>
-        <select [(ngModel)]="searchStatus">
-          <option value="All">All</option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
-      </div>
-    </div>
-    <div class="search-actions">
-      <button class="btn-search" (click)="onSearch()">Search</button>
-    </div>
-  </div> -->
+  <!-- Search Component -->
   <app-search-component ></app-search-component>
 
   <!-- Employee Table -->
-  <div class="table-container">
-    <table class="employee-table">
-      <thead>
-        <tr>
-          <th>Employee Code</th>
-          <th>Full Name</th>
-          <th>Address</th>
-          <th>NIC</th>
-          <th>Mobile No</th>
-          <th>Designation</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let emp of filteredEmployees">
-          <td>{{ emp.empCode }}</td>
-          <td>{{ emp.firstName }} {{ emp.lastName }}</td>
-          <td>{{ emp.address }}</td>
-          <td>{{ emp.nic }}</td>
-          <td>{{ emp.mobileNo }}</td>
-          <td>{{ emp.designation }}</td>
-          <td>
-            <span class="status-badge" [ngClass]="emp.status.toLowerCase()">
-              {{ emp.status }}
-            </span>
-          </td>
-          <td class="actions-cell">
-            <button class="btn-action view" (click)="onView(emp)">View</button>
-          </td>
-        </tr>
-        <tr *ngIf="filteredEmployees.length === 0">
-          <td colspan="8" class="no-data">No employees found.</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <app-employee-view-table-component [filteredEmployees]="filteredEmployees" (viewEmployee)="onView($event)"></app-employee-view-table-component>
 
   <!-- Reusable Form Fields Template -->
   <ng-template #formFields>
