@@ -15,11 +15,12 @@ import { EventEmitter } from '@angular/core';
 import { RegistrationModal } from './registration-modal/registration-modal';
 import { fetchEmployees } from './fetchEmployees';
 import { onFileChange } from './onFileChange';
+import { SearchComponent } from './search-component/search-component';
 
 @Component({
   selector: 'app-employee-management-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MapPickerComponent, RegistrationModal],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MapPickerComponent, RegistrationModal, SearchComponent],
   templateUrl: './employee-management-page.component.html',
   styleUrls: ['./employee-management-page.component.css'],
 })

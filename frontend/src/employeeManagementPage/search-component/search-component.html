@@ -1,0 +1,27 @@
+<div class="search-panel">
+    <div class="search-grid">
+      <div class="search-group">
+        <label>Employee Code</label>
+        <input type="text" [(ngModel)]="searchCode" placeholder="Search by Code" />
+      </div>
+      <div class="search-group">
+        <label>Employee NIC</label>
+        <input type="text" [(ngModel)]="searchNic" placeholder="Search by NIC" />
+      </div>
+      <div class="search-group">
+        <label>Employee Name</label>
+        <input type="text" [(ngModel)]="searchName" placeholder="Search by Name" />
+      </div>
+      <div class="search-group">
+        <label>Status</label>
+        <select [(ngModel)]="searchStatus">
+          <option value="All">All</option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div class="search-actions">
+      <button class="btn-search" (click)="onSearch()">Search</button>
+    </div>
+  </div>

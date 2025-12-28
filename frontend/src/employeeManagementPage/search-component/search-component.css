@@ -1,0 +1,59 @@
+/* Search Panel (moved from employee-management-page.component.css) */
+.search-panel {
+	background: #f8f9fa;
+	padding: 1.5rem;
+	border-radius: 8px;
+	margin-bottom: 2rem;
+	border: 1px solid #e9ecef;
+}
+
+.search-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 1rem;
+	margin-bottom: 1rem;
+}
+
+.search-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.search-actions {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.btn-search {
+	background-color: #3498db;
+	color: white;
+	border: none;
+	padding: 0.75rem 2rem;
+	border-radius: 6px;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.btn-search:hover {
+	background-color: #2980b9;
+}
+
+/* Inputs used inside the search component */
+input,
+select,
+textarea {
+	padding: 0.75rem;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	font-size: 1rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+	outline: none;
+	border-color: #3498db;
+	box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+}
+
