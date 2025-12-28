@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { fetchEmployees } from '../fetchEmployees';
+import { fetchEmployees } from '../utils/fetchEmployees';
 import { FormsModule } from '@angular/forms';
 
 @Component({

@@ -6,8 +6,8 @@ import {
   ReactiveFormsModule, } from '@angular/forms';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { fetchEmployees } from '../fetchEmployees';
-import { onFileChange } from '../onFileChange';
+import { fetchEmployees } from '../utils/fetchEmployees';
+import { onFileChange } from '../utils/onFileChange';
 import { MapPickerComponent } from '../../map-picker/map-picker.component';
 
 @Component({

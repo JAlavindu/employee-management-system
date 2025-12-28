@@ -9,12 +9,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { environment } from '../environments/environment';
-import { minimumAgeValidator } from './minimumAgeValidator';
+import { minimumAgeValidator } from './utils/minimumAgeValidator';
 import { MapPickerComponent } from '../map-picker/map-picker.component';
 import { EventEmitter } from '@angular/core';
 import { RegistrationModal } from './registration-modal/registration-modal';
-import { fetchEmployees } from './fetchEmployees';
-import { onFileChange } from './onFileChange';
+import { fetchEmployees } from './utils/fetchEmployees';
+import { onFileChange } from './utils/onFileChange';
 import { SearchComponent } from './search-component/search-component';
 
 @Component({
