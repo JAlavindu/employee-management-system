@@ -35,12 +35,6 @@ export class EmployeeManagementPageComponent implements OnInit {
   showMapPicker = false;
   activeTab: string = 'details';
 
-  // Search State
-  searchCode = '';
-  searchNic = '';
-  searchName = '';
-  searchStatus = 'All';
-
   // Data State
   employees: any[] = [];
   filteredEmployees: any[] = [];
@@ -84,57 +78,8 @@ export class EmployeeManagementPageComponent implements OnInit {
     fetchEmployees.call(this);
   }
 
-  // fetchEmployees() {
-  //   // TODO: Replace with actual API call
-  //   // const apiUrl = `${environment.apiUrl}employee`;
-  //   // this.http.get(apiUrl).subscribe(...)
-
-  //   const apiUrl = `${environment.apiUrl}employees`;
-  //   //const token = localStorage.getItem('authToken');
-
-  //   // const headers = {
-  //   //   Authorization: `Bearer ${token}`,
-  //   // };
-  //   this.http.get(apiUrl).subscribe({
-  //     next: (data: any) => {
-  //       console.log('Fetched employees:', data);
-  //       this.employees = data;
-  //       this.filteredEmployees = [...this.employees];
-  //       console.log('Filtered employees updated:', this.filteredEmployees);
-  //       this.cdr.detectChanges();
-  //     },
-  //     error: (error: any) => {
-  //       console.error('Error fetching employees:', error);
-  //       alert('Failed to fetch employees. Please try again.');
-  //       if (error.status === 401 || error.status === 403) {
-  //         alert('Session expired. Please login again.');
-
-  //         localStorage.removeItem('authToken');
-  //         // Redirect to login page
-  //         window.location.href = '/login';
-  //       }
-  //     },
-  //   });
-  // }
-
   fileChange(event: Event) {
     onFileChange.call(this, event, this);
-  }
-
-  onSearch() {
-    this.filteredEmployees = this.employees.filter((emp) => {
-      const matchCode = this.searchCode
-        ? emp.empCode.toLowerCase().includes(this.searchCode.toLowerCase())
-        : true;
-      const matchNic = this.searchNic
-        ? emp.nic.toLowerCase().includes(this.searchNic.toLowerCase())
-        : true;
-      const fullName = `${emp.firstName} ${emp.lastName}`.toLowerCase();
-      const matchName = this.searchName ? fullName.includes(this.searchName.toLowerCase()) : true;
-      const matchStatus = this.searchStatus !== 'All' ? emp.status === this.searchStatus : true;
-
-      return matchCode && matchNic && matchName && matchStatus;
-    });
   }
 
   onView(employee: any) {
