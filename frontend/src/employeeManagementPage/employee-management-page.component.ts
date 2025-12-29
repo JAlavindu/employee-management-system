@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, inject, OnInit, Output } from '@angular/core';
+import { Component, inject, OnInit, Output, ChangeDetectorRef } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -8,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { environment } from '../environments/environment';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { minimumAgeValidator } from './utils/minimumAgeValidator';
 import { MapPickerComponent } from '../map-picker/map-picker.component';
 import { EventEmitter } from '@angular/core';
@@ -22,7 +21,7 @@ import { EmployeeViewEditComponent } from './employee-view-edit-component/employ
 @Component({
   selector: 'app-employee-management-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MapPickerComponent, RegistrationModal, SearchComponent, EmployeeViewTableComponent, EmployeeViewEditComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule, MapPickerComponent, RegistrationModal, SearchComponent, EmployeeViewTableComponent, EmployeeViewEditComponent],
   templateUrl: './employee-management-page.component.html',
   styleUrls: ['./employee-management-page.component.css'],
 })
@@ -149,99 +148,9 @@ export class EmployeeManagementPageComponent implements OnInit {
     this.employeeForm.get('dob')?.enable();
   }
 
-  closeViewModal() {
-    this.showViewModal = false;
-    this.selectedEmployee = null;
-  }
-
-  onSubmit() {
-    if (this.employeeForm.valid) {
-      console.log('Form Value:', this.employeeForm.value);
-      // Use getRawValue() to include disabled fields if needed
-      const formValue = this.employeeForm.getRawValue();
-      const formData = new FormData();
-
-      // 1. Prepare the Employee JSON Object
-      // Map frontend form controls to backend model fields
-      const employeeData = {
-        empCode: formValue.employeeCode,
-        firstName: formValue.firstName,
-        lastName: formValue.lastName,
-        address: formValue.address,
-        nic: formValue.nic, // Try lowercase 'nic' first, as Jackson usually maps getters like getNIC() to 'nic'
-        NIC: formValue.nic, // Send both to be safe if unsure about Jackson configuration
-        mobileNo: formValue.mobileNo,
-        gender: formValue.gender,
-        email: formValue.email,
-        designation: formValue.designation,
-        status: formValue.status,
-        dob: formValue.dob,
-      };
-
-      // delete employeeData.profileImage; // No longer needed as we constructed a new object
-
-      // 2. Append the 'employee' part as a JSON Blob
-      formData.append(
-        'employee',
-        new Blob([JSON.stringify(employeeData)], {
-          type: 'application/json',
-        })
-      );
-
-      // 3. Append the 'imageFile' part
-      const file = this.employeeForm.get('profileImage')?.value;
-      if (file) {
-        formData.append('imageFile', file);
-      }
-
-      // 4. Send to Backend
-      // const token = localStorage.getItem('authToken');
-      // const headers = {
-      //   Authorization: `Bearer ${token}`,
-      // };
-
-      if (this.isEditMode && this.selectedEmployee) {
-        // UPDATE (PUT)
-        const apiUrl = `${environment.apiUrl}employee/${this.selectedEmployee.empCode}`;
-        this.http.put(apiUrl, formData).subscribe({
-          next: (response: any) => {
-            console.log('Employee updated successfully:', response);
-            alert('Employee updated successfully!');
-            this.closeModal();
-            fetchEmployees();
-          },
-          error: (error: any) => {
-            console.error('Error updating employee:', error);
-            alert('Failed to update employee. Please try again.');
-          },
-        });
-      } else {
-        // CREATE (POST)
-        const apiUrl = `${environment.apiUrl}employee`;
-        this.http.post(apiUrl, formData).subscribe({
-          next: (response: any) => {
-            console.log('Employee added successfully:', response);
-            alert('Employee added successfully!');
-            this.closeModal();
-            fetchEmployees();
-          },
-          error: (error: any) => {
-            console.error('Error adding employee:', error);
-            alert('Failed to add employee. Please try again.');
-          },
-        });
-      }
-    } else {
-      this.employeeForm.markAllAsTouched();
-      alert('Please fill in all required fields correctly.');
-    }
-  }
-
   onAddressSelected(address: string) {
     // Update the form control with the address from the map
     this.employeeForm.patchValue({ address: address });
     this.employeeForm.get('address')?.markAsDirty();
-    // Optionally close map after selection
-    // this.showMapPicker = false;
   }
 }

@@ -11,14 +11,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class EmployeeViewTableComponent{
   @Input() filteredEmployees: any[] = [];
   @Output() viewEmployee = new EventEmitter<any>();
-  // @Output() showViewModal = new EventEmitter<boolean>();
   selectedEmployee: any = null;
   viewModalVisible: boolean = false;
 
    onView(employee: any) {
     console.log('View employee:', employee);
     this.selectedEmployee = employee;
-    this.viewEmployee.emit(employee);
-    
+    this.viewEmployee.emit(employee); 
   }
 }

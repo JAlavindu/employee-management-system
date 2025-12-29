@@ -3,8 +3,16 @@ import { environment } from "../../environments/environment";
 export function fetchEmployees(this: any) {
 
   const apiUrl = `${environment.apiUrl}employees`;
-  
-  this.http.get(apiUrl).subscribe({
+  const token = localStorage.getItem('authToken');
+  console.log('fetchEmployees: authToken present?', !!token);
+
+  // Attach Authorization header explicitly for debugging purposes.
+  // The app uses an interceptor to set this header; this helps confirm header behavior.
+  const options = token
+    ? { headers: { Authorization: `Bearer ${token}` } }
+    : {};
+
+  this.http.get(apiUrl, options).subscribe({
     next: (data: any) => {
       console.log('Fetched employees:', data);
       this.employees = data;
