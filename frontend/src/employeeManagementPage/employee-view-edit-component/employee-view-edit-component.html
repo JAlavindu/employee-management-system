@@ -1,1 +1,104 @@
-<p>employee-view-edit-component works!</p>
+<div class="modal-overlay" *ngIf="showEmployeeViewModal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <!-- Tabs for View/Edit -->
+        <div class="modal-tabs" style="display: flex; gap: 10px">
+          <button
+            class="tab-btn"
+            [class.active]="employeeActiveTab === 'details'"
+            (click)="setActiveTab('details')"
+            style="
+              padding: 8px 16px;
+              border: none;
+              background: none;
+              cursor: pointer;
+              border-bottom: 2px solid transparent;
+            "
+            [style.border-bottom-color]="employeeActiveTab === 'details' ? '#007bff' : 'transparent'"
+            [style.font-weight]="employeeActiveTab === 'details' ? 'bold' : 'normal'"
+          >
+            Details
+          </button>
+          <button
+            class="tab-btn"
+            [class.active]="employeeActiveTab === 'edit'"
+            (click)="setActiveTab('edit')"
+            style="
+              padding: 8px 16px;
+              border: none;
+              background: none;
+              cursor: pointer;
+              border-bottom: 2px solid transparent;
+            "
+            [style.border-bottom-color]="employeeActiveTab === 'edit' ? '#007bff' : 'transparent'"
+            [style.font-weight]="employeeActiveTab === 'edit' ? 'bold' : 'normal'"
+          >
+            Edit
+          </button>
+        </div>
+        <button class="close-btn" (click)="closeViewModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- DETAILS TAB CONTENT -->
+        <div *ngIf="employeeActiveTab === 'details' && selectedEmployee">
+          <div class="detail-row">
+            <strong>Employee Code:</strong> <span>{{ selectedEmployee.empCode }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Full Name:</strong>
+            <span>{{ selectedEmployee.firstName }} {{ selectedEmployee.lastName }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>NIC:</strong> <span>{{ selectedEmployee.nic }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Designation:</strong> <span>{{ selectedEmployee.designation }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Email:</strong> <span>{{ selectedEmployee.email }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Mobile No:</strong> <span>{{ selectedEmployee.mobileNo }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Gender:</strong> <span>{{ selectedEmployee.gender }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Date of Birth:</strong> <span>{{ selectedEmployee.dob }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Address:</strong> <span>{{ selectedEmployee.address }}</span>
+          </div>
+          <div class="detail-row">
+            <strong>Status:</strong> <span>{{ selectedEmployee.status }}</span>
+          </div>
+        </div>
+
+        <!-- EDIT TAB CONTENT -->
+        <div *ngIf="employeeActiveTab === 'edit'">
+          <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+            <!-- Reuse the form fields template -->
+            <ng-container *ngTemplateOutlet="formFields"></ng-container>
+
+            <div class="modal-footer">
+              <button type="submit" class="btn-save" [disabled]="employeeForm.invalid">
+                Update Employee
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Footer only for Details Tab -->
+      <div class="modal-footer" *ngIf="employeeActiveTab === 'details'">
+        <button class="btn-download pdf" (click)="downloadReport('pdf')">
+          <i class="fa fa-file-pdf-o"></i> PDF
+        </button>
+        <button class="btn-download excel" (click)="downloadReport('excel')">
+          <i class="fa fa-file-excel-o"></i> Excel
+        </button>
+        <button class="btn-secondary" (click)="closeViewModal()">Close</button>
+      </div>
+    </div>
+  </div>

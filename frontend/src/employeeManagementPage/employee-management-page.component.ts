@@ -17,11 +17,12 @@ import { fetchEmployees } from './utils/fetchEmployees';
 import { onFileChange } from './utils/onFileChange';
 import { SearchComponent } from './search-component/search-component';
 import { EmployeeViewTableComponent } from './employee-view-table-component/employee-view-table-component';
+import { EmployeeViewEditComponent } from './employee-view-edit-component/employee-view-edit-component';
 
 @Component({
   selector: 'app-employee-management-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, MapPickerComponent, RegistrationModal, SearchComponent, EmployeeViewTableComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MapPickerComponent, RegistrationModal, SearchComponent, EmployeeViewTableComponent, EmployeeViewEditComponent],
   templateUrl: './employee-management-page.component.html',
   styleUrls: ['./employee-management-page.component.css'],
 })
@@ -32,7 +33,7 @@ export class EmployeeManagementPageComponent implements OnInit {
   showViewModal = false;
   isEditMode = false;
   selectedEmployee: any = null;
-  employeeForm: FormGroup;
+  employeeForm!: FormGroup;
   showMapPicker = false;
   activeTab: string = 'details';
 
@@ -75,7 +76,6 @@ export class EmployeeManagementPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    //this.fetchEmployees();
     fetchEmployees.call(this);
   }
 
@@ -88,65 +88,6 @@ export class EmployeeManagementPageComponent implements OnInit {
     this.selectedEmployee = employee;
     this.showViewModal = true;
     this.activeTab = 'details';
-  }
-
-  setActiveTab(tabName: string) {
-    this.activeTab = tabName;
-
-    if (tabName === 'edit' && this.selectedEmployee) {
-      this.isEditMode = true;
-      console.log('Patching form with:', this.selectedEmployee);
-      this.employeeForm.patchValue({
-        employeeCode: this.selectedEmployee.empCode,
-        firstName: this.selectedEmployee.firstName,
-        lastName: this.selectedEmployee.lastName,
-        address: this.selectedEmployee.address,
-        nic: this.selectedEmployee.nic,
-        mobileNo: this.selectedEmployee.mobileNo,
-        gender: this.selectedEmployee.gender,
-        email: this.selectedEmployee.email,
-        designation: this.selectedEmployee.designation,
-        profileImage: null,
-        dob: this.selectedEmployee.dob,
-        status: this.selectedEmployee.status,
-      });
-
-      this.employeeForm.get('employeeCode')?.disable();
-      this.employeeForm.get('gender')?.disable();
-      this.employeeForm.get('dob')?.disable();
-      this.employeeForm.get('profileImage')?.clearValidators();
-    }
-
-    // if( tabName === 'view' && this.selectedEmployee)
-  }
-
-  downloadReport(format: 'pdf' | 'excel') {
-    if (!this.selectedEmployee) return;
-
-    const empCode = this.selectedEmployee.empCode;
-    // Construct URL: e.g., /api/employee/{empCode}/download/pdf
-    const apiUrl = `${environment.apiUrl}employee/${empCode}/download/${format}`;
-    //const token = localStorage.getItem('authToken');
-    //const headers = { Authorization: `Bearer ${token}` };
-
-    this.http.get(apiUrl, { responseType: 'blob' }).subscribe({
-      next: (blob: Blob) => {
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `Employee_${empCode}_Report.${format === 'excel' ? 'xlsx' : 'pdf'}`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      },
-      error: (error) => {
-        console.error(`Error downloading ${format} report:`, error);
-        alert(
-          `Failed to download ${format.toUpperCase()} report. Please ensure the backend supports this feature.`
-        );
-      },
-    });
   }
 
   onEdit(employee: any) {
