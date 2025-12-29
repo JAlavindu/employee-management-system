@@ -9,7 +9,6 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./search-component.css'],
 })
 export class SearchComponent {
-  // Search State
   searchCode = '';
   searchNic = '';
   searchName = '';

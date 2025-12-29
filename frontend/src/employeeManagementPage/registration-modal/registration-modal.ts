@@ -39,19 +39,16 @@ export class RegistrationModal {
   onSubmitForm(){
     if (this.employeeForm.valid) {
           console.log('Form Value:', this.employeeForm.value);
-          // Use getRawValue() to include disabled fields if needed
           const formValue = this.employeeForm.getRawValue();
           const formData = new FormData();
     
-          // 1. Prepare the Employee JSON Object
-          // Map frontend form controls to backend model fields
           const employeeData = {
             empCode: formValue.employeeCode,
             firstName: formValue.firstName,
             lastName: formValue.lastName,
             address: formValue.address,
-            nic: formValue.nic, // Try lowercase 'nic' first, as Jackson usually maps getters like getNIC() to 'nic'
-            NIC: formValue.nic, // Send both to be safe if unsure about Jackson configuration
+            nic: formValue.nic, 
+            NIC: formValue.nic, 
             mobileNo: formValue.mobileNo,
             gender: formValue.gender,
             email: formValue.email,
@@ -60,9 +57,6 @@ export class RegistrationModal {
             dob: formValue.dob,
           };
     
-          // delete employeeData.profileImage; // No longer needed as we constructed a new object
-    
-          // 2. Append the 'employee' part as a JSON Blob
           formData.append(
             'employee',
             new Blob([JSON.stringify(employeeData)], {
@@ -70,7 +64,6 @@ export class RegistrationModal {
             })
           );
     
-          // 3. Append the 'imageFile' part
           const file = this.employeeForm.get('profileImage')?.value;
           if (file) {
             formData.append('imageFile', file);
@@ -97,11 +90,8 @@ export class RegistrationModal {
   }
 
   onAddressSelected(address: string) {
-    // Update the form control with the address from the map
     this.employeeForm.patchValue({ address: address });
     this.employeeForm.get('address')?.markAsDirty();
-    // Optionally close map after selection
-    // this.showMapPicker = false;
   }
 
   fileChange(event: Event) {

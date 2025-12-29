@@ -36,10 +36,7 @@ export class EmployeeViewEditComponent implements OnChanges {
       console.log('Edit mode enabled for employee:', this.selectedEmployee);
       console.log('Before reset - employeeCode control value:', this.employeeForm.get('employeeCode')?.value);
       console.log('Before reset - form raw value:', this.employeeForm.getRawValue());
-      // Reset the form first to avoid stale values from previous edits/views
       this.employeeForm.reset({ gender: this.selectedEmployee.gender ?? 'male', status: this.selectedEmployee.status ?? 'Active' });
-
-      // Ensure controls are enabled so patchValue actually updates them
       this.employeeForm.get('employeeCode')?.enable();
       this.employeeForm.get('gender')?.enable();
       this.employeeForm.get('dob')?.enable();
@@ -70,7 +67,6 @@ export class EmployeeViewEditComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if ((changes['selectedEmployee'] || changes['employeeActiveTab']) && this.selectedEmployee && this.employeeActiveTab === 'edit') {
-      // If either the selected employee changed or tab switched to edit, ensure form is populated
       this.populateFormFromSelected();
     }
   }
@@ -78,10 +74,8 @@ export class EmployeeViewEditComponent implements OnChanges {
   private populateFormFromSelected() {
     if (!this.selectedEmployee) return;
     this.isEditMode = true;
-    // Reset form to clear previous values, but preserve gender/status defaults from the selected employee
     this.employeeForm.reset({ gender: this.selectedEmployee.gender ?? 'male', status: this.selectedEmployee.status ?? 'Active' });
 
-    // Ensure controls are enabled so patchValue actually updates them
     this.employeeForm.get('employeeCode')?.enable();
     this.employeeForm.get('gender')?.enable();
     this.employeeForm.get('dob')?.enable();
@@ -101,7 +95,6 @@ export class EmployeeViewEditComponent implements OnChanges {
       status: this.selectedEmployee.status,
     });
 
-    // Disable non-editable fields
     this.employeeForm.get('employeeCode')?.disable();
     this.employeeForm.get('gender')?.disable();
     this.employeeForm.get('dob')?.disable();
@@ -146,12 +139,9 @@ export class EmployeeViewEditComponent implements OnChanges {
   onSubmit() {
     if (this.employeeForm.valid) {
       console.log('Form Value:', this.employeeForm.value);
-      // Use getRawValue() to include disabled fields if needed
       const formValue = this.employeeForm.getRawValue();
       const formData = new FormData();
 
-      // 1. Prepare the Employee JSON Object
-      // Map frontend form controls to backend model fields
       const employeeData = {
         empCode: formValue.employeeCode,
         firstName: formValue.firstName,
@@ -167,7 +157,6 @@ export class EmployeeViewEditComponent implements OnChanges {
         dob: formValue.dob,
       };
 
-      // 2. Append the 'employee' part as a JSON Blob
       formData.append(
         'employee',
         new Blob([JSON.stringify(employeeData)], {
@@ -175,14 +164,13 @@ export class EmployeeViewEditComponent implements OnChanges {
         })
       );
 
-      // 3. Append the 'imageFile' part
+    
       const file = this.employeeForm.get('profileImage')?.value;
       if (file) {
         formData.append('imageFile', file);
       }
 
       if (this.isEditMode && this.selectedEmployee) {
-        // UPDATE (PUT)
         const apiUrl = `${environment.apiUrl}employee/${this.selectedEmployee.empCode}`;
         this.http.put(apiUrl, formData).subscribe({
           next: (response: any) => {

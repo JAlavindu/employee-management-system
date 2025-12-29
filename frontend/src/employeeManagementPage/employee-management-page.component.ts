@@ -36,7 +36,6 @@ export class EmployeeManagementPageComponent implements OnInit {
   showMapPicker = false;
   activeTab: string = 'details';
 
-  // Data State
   employees: any[] = [];
   filteredEmployees: any[] = [];
 
@@ -94,7 +93,6 @@ export class EmployeeManagementPageComponent implements OnInit {
     this.showViewModal = false;
     this.selectedEmployee = null;
     this.activeTab = 'details';
-    // Reset the shared form to avoid stale values when next opening edit/create
     this.employeeForm.reset({ gender: 'male', status: 'Active' });
     this.employeeForm.get('employeeCode')?.enable();
     this.employeeForm.get('gender')?.enable();
@@ -107,7 +105,6 @@ export class EmployeeManagementPageComponent implements OnInit {
     this.selectedEmployee = employee;
     this.showModal = true;
 
-    // Patch values
     this.employeeForm.patchValue({
       employeeCode: employee.empCode,
       firstName: employee.firstName,
@@ -120,15 +117,12 @@ export class EmployeeManagementPageComponent implements OnInit {
       designation: employee.designation,
       dob: employee.dob,
       status: employee.status,
-      profileImage: null, // Reset file input
+      profileImage: null, 
     });
 
-    // Disable fields that cannot be edited
     this.employeeForm.get('employeeCode')?.disable();
     this.employeeForm.get('gender')?.disable();
     this.employeeForm.get('dob')?.disable();
-
-    // Remove required validator for profileImage in edit mode (optional update)
     this.employeeForm.get('profileImage')?.clearValidators();
     this.employeeForm.get('profileImage')?.updateValueAndValidity();
   }
@@ -137,14 +131,11 @@ export class EmployeeManagementPageComponent implements OnInit {
     this.showModalChange.emit(true);
     this.showModal = true;
     this.isEditMode = false;
-    // Reset form to ensure no stale values from previously viewed/edited employee
+    this.selectedEmployee = null;
     this.employeeForm.reset({ gender: 'male', status: 'Active' });
-    // Re-enable fields for new employee
     this.employeeForm.get('employeeCode')?.enable();
     this.employeeForm.get('gender')?.enable();
     this.employeeForm.get('dob')?.enable();
-
-    // Clear any previously set file value and add required validator back for profileImage
     this.employeeForm.get('profileImage')?.setValue(null);
     this.employeeForm.get('profileImage')?.setValidators(Validators.required);
     this.employeeForm.get('profileImage')?.updateValueAndValidity();
@@ -156,15 +147,12 @@ export class EmployeeManagementPageComponent implements OnInit {
     this.isEditMode = false;
     this.selectedEmployee = null;
     this.employeeForm.reset({ gender: 'male', status: 'Active' });
-
-    // Re-enable fields just in case
     this.employeeForm.get('employeeCode')?.enable();
     this.employeeForm.get('gender')?.enable();
     this.employeeForm.get('dob')?.enable();
   }
 
   onAddressSelected(address: string) {
-    // Update the form control with the address from the map
     this.employeeForm.patchValue({ address: address });
     this.employeeForm.get('address')?.markAsDirty();
   }

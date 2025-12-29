@@ -3,7 +3,7 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 export function minimumAgeValidator(minAge: number): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     if (!control.value) {
-      return null; // Let required validator handle empty values
+      return null; 
     }
 
     const birthDate = new Date(control.value);
@@ -12,7 +12,6 @@ export function minimumAgeValidator(minAge: number): ValidatorFn {
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
 
-    // Adjust age if birthday hasn't occurred yet this year
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
