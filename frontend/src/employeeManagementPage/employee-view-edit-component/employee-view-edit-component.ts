@@ -10,7 +10,10 @@ import { fetchEmployees } from '../utils/fetchEmployees';
   selector: 'app-employee-view-edit-component',
   imports: [NgIf, ReactiveFormsModule, NgTemplateOutlet],
   templateUrl: './employee-view-edit-component.html',
-  styleUrl: './employee-view-edit-component.css',
+  styleUrls: ['./employee-view-edit-component.css'],
+  host: {
+    class: 'employee-view-edit'
+  },
 })
 export class EmployeeViewEditComponent {
   @Input() showEmployeeViewModal: boolean = false;

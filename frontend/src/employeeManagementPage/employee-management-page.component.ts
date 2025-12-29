@@ -84,8 +84,15 @@ export class EmployeeManagementPageComponent implements OnInit {
 
   onView(employee: any) {
     console.log('View employee:', employee);
+    console.log('modal opened in employee management page');
     this.selectedEmployee = employee;
     this.showViewModal = true;
+    this.activeTab = 'details';
+  }
+
+  closeViewModal() {
+    this.showViewModal = false;
+    this.selectedEmployee = null;
     this.activeTab = 'details';
   }
 

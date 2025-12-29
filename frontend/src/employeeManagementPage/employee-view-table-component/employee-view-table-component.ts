@@ -16,6 +16,7 @@ export class EmployeeViewTableComponent{
 
    onView(employee: any) {
     console.log('View employee:', employee);
+    console.log('modal opened in employee view table component');
     this.selectedEmployee = employee;
     this.viewEmployee.emit(employee); 
   }

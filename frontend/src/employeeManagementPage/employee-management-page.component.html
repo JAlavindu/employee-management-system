@@ -282,7 +282,7 @@
   <app-registration-modal [isModalOpen]="showModal" (closeModal)="closeModal($event)" [employeeForm]="employeeForm" [callToggleMap]="toggleMap" [showMapPicker]="showMapPicker" [designations]="designations"></app-registration-modal>
 
   <!-- View/Edit Employee Modal -->
-  <app-employee-view-edit-component [showEmployeeViewModal]="showViewModal" [employeeActiveTab]="activeTab" [selectedEmployee]="selectedEmployee" (close)="closeModal()" [formFields]="formFields"
+  <app-employee-view-edit-component [showEmployeeViewModal]="showViewModal" [employeeActiveTab]="activeTab" [selectedEmployee]="selectedEmployee" (close)="closeViewModal()" [formFields]="formFields"
     [employeeForm]="employeeForm"
     [fileChange]="fileChange"></app-employee-view-edit-component>
 </div>
