@@ -1,5 +1,6 @@
 import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { OnChanges, SimpleChanges } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
@@ -15,7 +16,7 @@ import { fetchEmployees } from '../utils/fetchEmployees';
     class: 'employee-view-edit'
   },
 })
-export class EmployeeViewEditComponent {
+export class EmployeeViewEditComponent implements OnChanges {
   @Input() showEmployeeViewModal: boolean = false;
   @Input() employeeActiveTab: string = 'details';
   @Input() selectedEmployee: any = null;
@@ -33,6 +34,16 @@ export class EmployeeViewEditComponent {
     if( tabName === 'edit' && this.selectedEmployee) {
       this.isEditMode = true;
       console.log('Edit mode enabled for employee:', this.selectedEmployee);
+      console.log('Before reset - employeeCode control value:', this.employeeForm.get('employeeCode')?.value);
+      console.log('Before reset - form raw value:', this.employeeForm.getRawValue());
+      // Reset the form first to avoid stale values from previous edits/views
+      this.employeeForm.reset({ gender: this.selectedEmployee.gender ?? 'male', status: this.selectedEmployee.status ?? 'Active' });
+
+      // Ensure controls are enabled so patchValue actually updates them
+      this.employeeForm.get('employeeCode')?.enable();
+      this.employeeForm.get('gender')?.enable();
+      this.employeeForm.get('dob')?.enable();
+
       this.employeeForm.patchValue({
         employeeCode: this.selectedEmployee.empCode,
         firstName: this.selectedEmployee.firstName,
@@ -47,12 +58,57 @@ export class EmployeeViewEditComponent {
         dob: this.selectedEmployee.dob,
         status: this.selectedEmployee.status,
       });
+      console.log('After patch - employeeCode control value:', this.employeeForm.get('employeeCode')?.value);
+      console.log('After patch - form raw value:', this.employeeForm.getRawValue());
 
       this.employeeForm.get('employeeCode')?.disable();
       this.employeeForm.get('gender')?.disable();
       this.employeeForm.get('dob')?.disable();
       this.employeeForm.get('profileImage')?.clearValidators();
     }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if ((changes['selectedEmployee'] || changes['employeeActiveTab']) && this.selectedEmployee && this.employeeActiveTab === 'edit') {
+      // If either the selected employee changed or tab switched to edit, ensure form is populated
+      this.populateFormFromSelected();
+    }
+  }
+
+  private populateFormFromSelected() {
+    if (!this.selectedEmployee) return;
+    this.isEditMode = true;
+    // Reset form to clear previous values, but preserve gender/status defaults from the selected employee
+    this.employeeForm.reset({ gender: this.selectedEmployee.gender ?? 'male', status: this.selectedEmployee.status ?? 'Active' });
+
+    // Ensure controls are enabled so patchValue actually updates them
+    this.employeeForm.get('employeeCode')?.enable();
+    this.employeeForm.get('gender')?.enable();
+    this.employeeForm.get('dob')?.enable();
+
+    this.employeeForm.patchValue({
+      employeeCode: this.selectedEmployee.empCode,
+      firstName: this.selectedEmployee.firstName,
+      lastName: this.selectedEmployee.lastName,
+      address: this.selectedEmployee.address,
+      nic: this.selectedEmployee.nic,
+      mobileNo: this.selectedEmployee.mobileNo,
+      gender: this.selectedEmployee.gender,
+      email: this.selectedEmployee.email,
+      designation: this.selectedEmployee.designation,
+      profileImage: null,
+      dob: this.selectedEmployee.dob,
+      status: this.selectedEmployee.status,
+    });
+
+    // Disable non-editable fields
+    this.employeeForm.get('employeeCode')?.disable();
+    this.employeeForm.get('gender')?.disable();
+    this.employeeForm.get('dob')?.disable();
+    this.employeeForm.get('profileImage')?.clearValidators();
+
+    console.log('After patch - employeeCode control value:', this.employeeForm.get('employeeCode')?.value);
+    console.log('After patch - form raw value:', this.employeeForm.getRawValue());
   }
 
   downloadReport(format: 'pdf' | 'excel') {
@@ -138,21 +194,6 @@ export class EmployeeViewEditComponent {
           error: (error: any) => {
             console.error('Error updating employee:', error);
             alert('Failed to update employee. Please try again.');
-          },
-        });
-      } else {
-        // CREATE (POST)
-        const apiUrl = `${environment.apiUrl}employee`;
-        this.http.post(apiUrl, formData).subscribe({
-          next: (response: any) => {
-            console.log('Employee added successfully:', response);
-            alert('Employee added successfully!');
-            this.closeViewModal();
-            fetchEmployees.call(this);
-          },
-          error: (error: any) => {
-            console.error('Error adding employee:', error);
-            alert('Failed to add employee. Please try again.');
           },
         });
       }

@@ -19,6 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem('authToken');
 
   console.log('Interceptor: URL =', req.url, 'Token found? =', !!token);
+  console.log('Interceptor: existing Authorization header =', req.headers.get('Authorization'));
 
   let modifiedReq = req;
   if (token) {
@@ -32,6 +33,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   // Handle the request and catch errors
   return next(modifiedReq).pipe(
     catchError((error: HttpErrorResponse) => {
+      console.error('Interceptor caught error for URL:', req.url, 'status:', error.status);
       // check if error is 401 (unauthorized)
       if (error.status === 401) {
         const refreshToken = localStorage.getItem('refreshToken');

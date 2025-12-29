@@ -1,10 +1,13 @@
+
 import { environment } from "../../environments/environment";
+
 
 export function fetchEmployees(this: any) {
 
   const apiUrl = `${environment.apiUrl}employees`;
   const token = localStorage.getItem('authToken');
   console.log('fetchEmployees: authToken present?', !!token);
+  
 
   // Attach Authorization header explicitly for debugging purposes.
   // The app uses an interceptor to set this header; this helps confirm header behavior.

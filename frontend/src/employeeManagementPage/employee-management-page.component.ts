@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { minimumAgeValidator } from './utils/minimumAgeValidator';
 import { MapPickerComponent } from '../map-picker/map-picker.component';
 import { EventEmitter } from '@angular/core';
@@ -21,7 +21,7 @@ import { EmployeeViewEditComponent } from './employee-view-edit-component/employ
 @Component({
   selector: 'app-employee-management-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, HttpClientModule, MapPickerComponent, RegistrationModal, SearchComponent, EmployeeViewTableComponent, EmployeeViewEditComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MapPickerComponent, RegistrationModal, SearchComponent, EmployeeViewTableComponent, EmployeeViewEditComponent],
   templateUrl: './employee-management-page.component.html',
   styleUrls: ['./employee-management-page.component.css'],
 })
@@ -94,6 +94,11 @@ export class EmployeeManagementPageComponent implements OnInit {
     this.showViewModal = false;
     this.selectedEmployee = null;
     this.activeTab = 'details';
+    // Reset the shared form to avoid stale values when next opening edit/create
+    this.employeeForm.reset({ gender: 'male', status: 'Active' });
+    this.employeeForm.get('employeeCode')?.enable();
+    this.employeeForm.get('gender')?.enable();
+    this.employeeForm.get('dob')?.enable();
   }
 
   onEdit(employee: any) {
@@ -132,12 +137,15 @@ export class EmployeeManagementPageComponent implements OnInit {
     this.showModalChange.emit(true);
     this.showModal = true;
     this.isEditMode = false;
+    // Reset form to ensure no stale values from previously viewed/edited employee
+    this.employeeForm.reset({ gender: 'male', status: 'Active' });
     // Re-enable fields for new employee
     this.employeeForm.get('employeeCode')?.enable();
     this.employeeForm.get('gender')?.enable();
     this.employeeForm.get('dob')?.enable();
 
-    // Add required validator back for profileImage
+    // Clear any previously set file value and add required validator back for profileImage
+    this.employeeForm.get('profileImage')?.setValue(null);
     this.employeeForm.get('profileImage')?.setValidators(Validators.required);
     this.employeeForm.get('profileImage')?.updateValueAndValidity();
   }
