@@ -6,15 +6,11 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { fetchEmployees } from '../utils/fetchEmployees';
 
-
 @Component({
   selector: 'app-employee-view-edit-component',
   imports: [NgIf, ReactiveFormsModule, NgTemplateOutlet],
   templateUrl: './employee-view-edit-component.html',
   styleUrls: ['./employee-view-edit-component.css'],
-  host: {
-    class: 'employee-view-edit'
-  },
 })
 export class EmployeeViewEditComponent implements OnChanges {
   @Input() showEmployeeViewModal: boolean = false;

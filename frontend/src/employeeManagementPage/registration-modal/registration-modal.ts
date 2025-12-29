@@ -68,8 +68,6 @@ export class RegistrationModal {
           if (file) {
             formData.append('imageFile', file);
           }
-
-          // CREATE (POST)
             const apiUrl = `${environment.apiUrl}employee`;
             this.http.post(apiUrl, formData).subscribe({
               next: (response: any) => {
