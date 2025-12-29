@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { fetchEmployees } from '../utils/fetchEmployees';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -10,30 +9,20 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./search-component.css'],
 })
 export class SearchComponent {
-  filterEmployees: any[] = [];
-  fetchedEmployees: any[] = [];
-
   // Search State
   searchCode = '';
   searchNic = '';
   searchName = '';
   searchStatus = 'All';
 
-  onSearch(){
-    const res = fetchEmployees();
-    this.fetchedEmployees = (res as unknown) as any[];
-    this.filterEmployees = this.fetchedEmployees.filter(emp => {
-      const matchCode = this.searchCode
-        ? emp.empCode.toLowerCase().includes(this.searchCode.toLowerCase())
-        : true;
-      const matchNic = this.searchNic
-        ? emp.nic.toLowerCase().includes(this.searchNic.toLowerCase())
-        : true;
-      const fullName = `${emp.firstName} ${emp.lastName}`.toLowerCase();
-      const matchName = this.searchName ? fullName.includes(this.searchName.toLowerCase()) : true;
-      const matchStatus = this.searchStatus !== 'All' ? emp.status === this.searchStatus : true;
+  @Output() searchEvent = new EventEmitter<{ searchCode: string; searchNic: string; searchName: string; searchStatus: string }>();
 
-      return matchCode && matchNic && matchName && matchStatus;
+  onSearch() {
+    this.searchEvent.emit({
+      searchCode: this.searchCode,
+      searchNic: this.searchNic,
+      searchName: this.searchName,
+      searchStatus: this.searchStatus,
     });
   }
 }

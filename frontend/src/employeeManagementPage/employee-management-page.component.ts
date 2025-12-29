@@ -168,4 +168,27 @@ export class EmployeeManagementPageComponent implements OnInit {
     this.employeeForm.patchValue({ address: address });
     this.employeeForm.get('address')?.markAsDirty();
   }
+  
+  onSearch(criteria: { searchCode: string; searchNic: string; searchName: string; searchStatus: string }) {
+    if (!this.employees || this.employees.length === 0) {
+      fetchEmployees.call(this);
+      setTimeout(() => this.applySearchFilter(criteria), 250);
+      return;
+    }
+
+    this.applySearchFilter(criteria);
+  }
+
+  private applySearchFilter(criteria: { searchCode: string; searchNic: string; searchName: string; searchStatus: string }) {
+    const { searchCode, searchNic, searchName, searchStatus } = criteria;
+    this.filteredEmployees = this.employees.filter((emp: any) => {
+      const matchCode = searchCode ? emp.empCode?.toLowerCase().includes(searchCode.toLowerCase()) : true;
+      const matchNic = searchNic ? emp.nic?.toLowerCase().includes(searchNic.toLowerCase()) : true;
+      const fullName = `${emp.firstName || ''} ${emp.lastName || ''}`.toLowerCase();
+      const matchName = searchName ? fullName.includes(searchName.toLowerCase()) : true;
+      const matchStatus = searchStatus && searchStatus !== 'All' ? emp.status === searchStatus : true;
+      return matchCode && matchNic && matchName && matchStatus;
+    });
+    this.cdr.detectChanges();
+  }
 }

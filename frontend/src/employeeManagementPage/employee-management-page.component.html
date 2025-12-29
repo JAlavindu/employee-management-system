@@ -5,7 +5,7 @@
   </div>
 
   <!-- Search Component -->
-  <app-search-component ></app-search-component>
+  <app-search-component (searchEvent)="onSearch($event)"></app-search-component>
 
   <!-- Employee Table -->
   <app-employee-view-table-component [filteredEmployees]="filteredEmployees" (viewEmployee)="onView($event)"></app-employee-view-table-component>
